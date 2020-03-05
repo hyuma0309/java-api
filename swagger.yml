@@ -1,0 +1,461 @@
+openapi: 3.0.0
+info:
+  description: "基本課題1「認証つきのRESTfulなAPIアプリケーション」"
+  version: "1.0.0"
+  title: "asada-restful-api"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+servers:
+  - url: http://localhost:8080
+    description: "ローカルサーバで使用"
+
+paths:
+  /api/items:
+    get:
+      tags:
+        - items
+      summary: "商品の全件取得"
+      description: "登録されている全ての商品をjson形式で返す"
+      parameters: []
+      responses:
+        '200':
+          description: "json形式で返却"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+                example:
+                  - id: 1
+                    imagePath: image/12345.png
+                    name: 赤ペン
+                    description: 赤いペンです
+                    price: 100
+                  - id: 2
+                    imagePath: image/54321.png
+                    name: 青ペン
+                    description: 青いペンです
+                    price: 100
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+
+    post:
+      tags:
+        - items
+      summary: "商品の作成"
+      description: "商品情報をPOSTメソッドで送信"
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+            example:
+              id: 3
+              name: 青ペン
+              description: 青いペンです
+              price: 100
+      responses:
+        '201':
+          description: "CREATED:画像のみJSONではなくmultipart/form-data形式でアップロードを受けとる"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+                example:
+                  id: 3
+                  imagePath: image/22332233.png
+                  name: 青ペン
+                  description: 青いペンです
+                  price: 100
+        '400':
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleMethodArgumentNotValid'
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+  /api/items/{id}:
+    get:
+      tags:
+        - items
+      summary: "商品のID取得"
+      description: "IDの商品データを１件取得し、JSON形式で返す。"
+      parameters:
+        - name: id
+          in: path
+          description: 商品データのID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "該当するidの商品をJSON形式で返す"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+              example:
+                id: 1
+                imagePath: image/12345.png
+                name: 赤ペン
+                description: 赤色のペンです
+                price: 100
+        '404':
+          description: "存在しない商品IDを入力した場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleItemNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+    put:
+      tags:
+        - items
+      summary: "商品の更新"
+      description: "IDの商品を更新"
+      parameters:
+        - name: id
+          in: path
+          description: 商品データのID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: "該当するidの商品情報を更新する"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+              example:
+                id: 1
+                imagePath: image/12345.png
+                name: 黄ペン
+                description: 黄色のペンです
+                price: 100
+        '400':
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleMethodArgumentNotValid'
+        '404':
+          description: "存在しない商品IDを入力した場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleItemNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+    delete:
+      tags:
+        - items
+      summary: "商品の削除"
+      description: "該当するidの商品情報を削除する"
+      parameters:
+        - name: id
+          in: path
+          description: 商品データのID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "NO CONTENT"
+        '404':
+          description: "存在しない商品IDを入力した場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleItemNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+  /api/items/{id}/image:
+    get:
+      tags:
+        - items
+      summary: "商品の画像取得"
+      description: "該当するidの商品に商品画像が登録されている場合に表示する"
+      parameters:
+        - name: id
+          in: path
+          description: 画像ファイル名
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "該当するidの商品画像を表示する"
+        '404':
+          description: "存在しない商品IDを入力した場合/商品は存在するけど商品画像が登録されていない場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleItemNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+
+    put:
+      tags:
+        - items
+      summary: "商品の画像のアップロード"
+      description: "id値を持つ商品に商品画像を登録する(multipart/form-data形式)"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: 商品ID
+      requestBody:
+        description: 商品を更新する
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        '200':
+          description: "該当するidの商品に商品画像を登録する"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+              example:
+                id: 2
+                imagePath: image/55555555.png
+                name: 青ペン
+                description: 青色のペンです
+                price: 666
+        '404':
+          description: "存在しない商品IDを入力した場合/商品は存在するけど商品画像が登録されていない場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleItemNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '415':
+          description: "使用不可の拡張子の画像が保存された場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleUnsupportedMediaTypeException'
+
+        '500':
+          description: "商品画像の登録に失敗/INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/handleAllException'
+    delete:
+      tags:
+        - items
+      summary: "商品画像の削除"
+      description: "id値を持つ商品の商品画像を削除する。"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: 商品ID
+      responses:
+        '200':
+          description: "該当するidの商品に商品画像を削除する。"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+              example:
+                id: 1
+                imagePath: null
+                name: 黄ペン
+                description: 黄色のペンです
+                price: 100
+        '404':
+          description: "存在しない商品IDを入力した場合/商品は存在するけど商品画像が登録されていない場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleItemNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '500':
+          description: "商品画像の削除に失敗/INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/handleItemImageNotDeletedException'
+                  - $ref: '#/components/schemas/handleAllException'
+  /api/items/search:
+    get:
+      tags:
+        - items
+      summary: "商品の商品タイトル検索"
+      description: "商品タイトルによる部分一致検索をする"
+      parameters:
+        - in: query
+          name: keyword
+          schema:
+            type: string
+          description: 商品タイトル
+      responses:
+        '200':
+          description: "商品タイトルの部分一致検索にヒットした商品を表示する"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+              example:
+                id: 1
+                imagePath: image/123456789.png
+                name: 赤ペン
+                description: 赤色のペンです
+                price: 100
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+
+components:
+  schemas:
+    Item:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - price
+      properties:
+        id:
+          type: integer
+          format: int64
+        imagePath:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+    Image:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+
+    handleAllException:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'サーバーエラーが発生しました'
+
+    handleMethodArgumentNotValid:
+      type: object
+      properties:
+        message:
+          type: string
+          example: '正しい値を入力してください。'
+
+    handleItemNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          example: '対象のリソースが見つかりませんでした'
+
+    handleTypeMismatch:
+      type: object
+      properties:
+        message:
+          type: string
+          example: '無効なURLのため表示できません'
+
+    handleItemImageNotDeletedException:
+      type: object
+      properties:
+        message:
+          type: string
+          example: '画像の削除に失敗しました'
+
+    handleUnsupportedMediaTypeException:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'この拡張子はしようできません'

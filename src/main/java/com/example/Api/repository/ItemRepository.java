@@ -6,7 +6,35 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 商品リポジトリ
+ *
+ * @author asada
+ */
 @Repository
 public interface ItemRepository extends JpaRepository<Api, Long> {
-  List<Api> findByNameContaining(String name);
+  /**
+   * タイトルが部分一致の商品を取得
+   *
+   * @param title 商品タイトル
+   * @return 商品情報のリスト
+   */
+  List<Api> findByTitleContaining(String title);
+
+  /**
+   * タイトルが完全一致の商品を取得
+   *
+   * @param title 商品タイトル
+   * @return 一件の商品情報
+   */
+  Api findByTitleEquals(String title);
+
+  /**
+   * IDが異なる同一タイトルの商品を取得
+   *
+   * @param title 商品タイトル
+   * @param id 商品ID
+   * @return 一件の商品情報
+   */
+  Api findByTitleEqualsAndIdNot(String title, long id);
 }

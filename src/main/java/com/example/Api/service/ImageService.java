@@ -12,6 +12,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * 画像サービス
+ *
+ * @author asada
+ */
 @Service
 @Transactional
 class ImageService {
@@ -20,6 +25,12 @@ class ImageService {
   @Value("${uploadDir}")
   private String uploadDir;
 
+  /**
+   * 画像ファイルのアップロード
+   *
+   * @param multipartFile 画像ファイル
+   * @return 商品画像
+   */
   String uploadFile(MultipartFile multipartFile) {
     // アップロードファイルのファイル名。
     String multipartFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -41,6 +52,11 @@ class ImageService {
     }
   }
 
+  /**
+   * 画像ファイルの削除
+   *
+   * @param imagePath 商品画像
+   */
   void deleteFile(String imagePath) {
     File file = new File(uploadDir + imagePath);
     if (!file.delete()) throw new ItemImageNotDeletedException("商品画像の削除に失敗しました: " + uploadDir + imagePath);

@@ -1,16 +1,27 @@
 package com.example.Api.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
+/**
+ * 商品Entity
+ *
+ * @author asada
+ */
 @Entity
 @Table(name = "items")
 @Data
@@ -20,16 +31,27 @@ public class Api {
   private long id;
 
   @NotNull
-  @Size(min = 1, max = 30)
-  private String name;
+  @NotBlank(message = "{validation.title-not-blank}")
+  @Size(max = 100, message = "{validation.title-too-long}")
+  private String title;
 
   @NotNull
-  @Size(min = 1, max = 30)
+  @NotBlank(message = "{validation.description-not-blank}")
+  @Size(max = 500, message = "{validation.description-too-long}")
   private String description;
 
   @NotNull
-  @Min(value = 0, message = "正しい価格を入力してください")
+  @Min(value = 1, message = "{validation.price-too-low}")
+  @Max(value = 1000000, message = "{validation.description-too-height}")
   private Integer price;
 
-  private String image;
+  private String imagepath;
+
+  @CreationTimestamp
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime createTime;
+
+  @UpdateTimestamp
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime updateTime;
 }

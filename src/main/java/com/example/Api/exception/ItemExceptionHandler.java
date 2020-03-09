@@ -44,7 +44,14 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
         e, "商品画像の削除に失敗しました", null, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
   }
 
-  /** バリデーションエラー時呼び出し */
+  /** 存在している商品タイトル登録時呼び出し */
+  @ExceptionHandler(AlreadyExistTitleException.class)
+  public ResponseEntity<Object> handleAlreadyExistTitleException(
+      AlreadyExistTitleException e, WebRequest request) {
+    return super.handleExceptionInternal(e, "商品の登録に失敗しました", null, HttpStatus.BAD_REQUEST, request);
+  }
+
+  /** {@inheritDoc} */
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
       MethodArgumentNotValidException ex,
@@ -54,7 +61,7 @@ public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, "正しい値を入力してください", headers, status, request);
   }
 
-  /** 引数がおかしい場合呼び出し */
+  /** {@inheritDoc} */
   @Override
   protected ResponseEntity<Object> handleTypeMismatch(
       TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

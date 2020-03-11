@@ -30,17 +30,15 @@ public class Api {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @NotNull
   @NotBlank(message = "{validation.title-not-blank}")
   @Size(max = 100, message = "{validation.title-too-long}")
   private String title;
 
-  @NotNull
   @NotBlank(message = "{validation.description-not-blank}")
   @Size(max = 500, message = "{validation.description-too-long}")
   private String description;
 
-  @NotNull
+  @NotNull(message = "{validation.price-not-null}")
   @Min(value = 1, message = "{validation.price-too-low}")
   @Max(value = 1000000, message = "{validation.description-too-height}")
   private Integer price;

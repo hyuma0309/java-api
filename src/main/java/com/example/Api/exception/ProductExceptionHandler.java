@@ -18,20 +18,20 @@ import javax.jws.WebResult;
  * @author asada
  */
 @RestControllerAdvice
-public class ItemExceptionHandler extends ResponseEntityExceptionHandler {
+public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 
   /** ID等のリソースが無い場合に呼び出し */
-  @ExceptionHandler(ItemNotFoundException.class)
+  @ExceptionHandler(ProductNotFoundException.class)
   public ResponseEntity<Object> handleItemNotFoundException(
-      ItemNotFoundException ex, WebResult request) {
+      ProductNotFoundException ex, WebResult request) {
     return super.handleExceptionInternal(
         ex, "handleItemNotFoundException", null, HttpStatus.NOT_FOUND, (WebRequest) request);
   }
 
   /** 画像の削除に失敗した時の呼び出し */
-  @ExceptionHandler(ItemImageNotDeletedException.class)
+  @ExceptionHandler(ProductImageNotDeletedException.class)
   public ResponseEntity<Object> handleItemImageNotDeletedException(
-      ItemImageNotDeletedException e, WebRequest request) {
+      ProductImageNotDeletedException e, WebRequest request) {
     return super.handleExceptionInternal(
         e, "商品画像の削除に失敗しました", null, HttpStatus.BAD_REQUEST, request);
   }

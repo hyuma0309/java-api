@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/api
+    url: jdbc:mysql://localhost:3306/restful_api
     username: root
     password:
     driverClassName: com.mysql.cj.jdbc.Driver

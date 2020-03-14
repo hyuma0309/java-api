@@ -1,15 +1,14 @@
 package com.example.Api.service;
 
-import com.example.Api.entitiy.Api;
+import com.example.Api.entitiy.Product;
 import com.example.Api.exception.AlreadyExistTitleException;
-import com.example.Api.exception.ItemNotFoundException;
-import com.example.Api.repository.ItemRepository;
+import com.example.Api.exception.ProductNotFoundException;
+import com.example.Api.repository.ProductRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,9 +28,9 @@ import java.util.Objects;
  */
 @Service
 @Transactional
-public class ItemService {
+public class ProductService {
 
-  private final ItemRepository itemRepository;
+  private final ProductRepository itemRepository;
 
   private final ImageService imageService;
 
@@ -41,20 +40,11 @@ public class ItemService {
   private String uploadDir;
 
   @Autowired
-  public ItemService(
-      ImageService imageService, ItemRepository itemRepository, ResourceLoader resourceLoader) {
+  public ProductService(
+      ImageService imageService, ProductRepository itemRepository, ResourceLoader resourceLoader) {
     this.itemRepository = itemRepository;
     this.imageService = imageService;
     this.resourceLoader = resourceLoader;
-  }
-
-  /**
-   * 全商品取得
-   *
-   * @return すべての商品情報リスト
-   */
-  public List<Api> findAll() {
-    return itemRepository.findAll(new Sort(Sort.Direction.DESC, "UpdateTime"));
   }
 
   /**
@@ -63,8 +53,8 @@ public class ItemService {
    * @param id 商品ID
    * @return 取得した商品情報
    */
-  public Api findItem(Long id) {
-    return itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+  public Product findItem(Long id) {
+    return itemRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
   }
 
   /**
@@ -75,9 +65,9 @@ public class ItemService {
    * @param price 商品価格
    * @return 登録した商品情報
    */
-  public Api create(Api api) {
+  public Product create(Product api) {
     if (isSameTitleExist(api)) throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
-    Api item = new Api();
+    Product item = new Product();
     item.setTitle(api.getTitle());
     item.setDescription(api.getDescription());
     item.setPrice(api.getPrice());
@@ -93,9 +83,9 @@ public class ItemService {
    * @param price 商品価格
    * @return 更新した商品情報
    */
-  public Api update(Long id, Api api) {
+  public Product update(Long id, Product api) {
     if (isSameTitleExistNotId(api)) throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
-    Api item = findItem(id);
+    Product item = findItem(id);
     item.setTitle(api.getTitle());
     item.setDescription(api.getDescription());
     item.setPrice(api.getPrice());
@@ -105,11 +95,11 @@ public class ItemService {
   /**
    * タイトルで商品検索
    *
-   * @param keyword 商品タイトル
+   * @param title 商品タイトル
    * @return 検索結果の商品情報リスト
    */
-  public List<Api> search(String keyword) {
-    return itemRepository.findByTitleContaining(keyword);
+  public List<Product> search(String title) {
+    return itemRepository.findByTitleContaining(title);
   }
 
   /**
@@ -128,12 +118,12 @@ public class ItemService {
    * @param file 商品画像
    * @return 画像を更新した商品情報
    */
-  public Api uploadImage(Long id, MultipartFile file) {
-    Api item = findItem(id);
+  public Product uploadImage(Long id, MultipartFile file) {
+    Product item = findItem(id);
     //      Objects.nonNull＝指定された参照がnull以外の場合はtrueを返す。それ以外の場合はfalseを返す。
     //      既に画像が登録されてる場合、上書きするために削除
-    if (Objects.nonNull(item.getImagepath())) imageService.deleteFile(item.getImagepath());
-    item.setImagepath(imageService.uploadFile(file));
+    if (Objects.nonNull(item.getImagePath())) imageService.deleteFile(item.getImagePath());
+    item.setImagePath(imageService.uploadFile(file));
     return itemRepository.save(item);
   }
 
@@ -143,11 +133,11 @@ public class ItemService {
    * @param id 商品ID
    * @return 画像を削除した商品情報
    */
-  public Api deleteImage(Long id) {
-    Api item = findItem(id);
-    imageService.deleteFile(item.getImagepath());
+  public Product deleteImage(Long id) {
+    Product item = findItem(id);
+    imageService.deleteFile(item.getImagePath());
     //  指定されたidの商品のimageをnullにして、画像を削除する.
-    item.setImagepath(null);
+    item.setImagePath(null);
     return itemRepository.save(item);
   }
 
@@ -158,8 +148,8 @@ public class ItemService {
    * @return 商品画像
    */
   public HttpEntity<byte[]> getImage(Long id) throws IOException {
-    Api item = findItem(id);
-    Resource resource = resourceLoader.getResource("File:" + uploadDir + item.getImagepath());
+    Product item = findItem(id);
+    Resource resource = resourceLoader.getResource("File:" + uploadDir + item.getImagePath());
     byte[] b;
     // ResourceインタフェースはInputStreamSourceインタフェースを継承しているのでgetInputStreamメソッドで、リソースファイルのInputStreamを取得することができます。
     try (InputStream image = resource.getInputStream()) {
@@ -178,8 +168,8 @@ public class ItemService {
    * @param title 商品タイトル
    * @return 検証結果
    */
-  private boolean isSameTitleExist(Api api) {
-    Api product = itemRepository.findByTitleEquals(api.getTitle());
+  private boolean isSameTitleExist(Product api) {
+    Product product = itemRepository.findByTitleEquals(api.getTitle());
     return product != null;
   }
 
@@ -190,8 +180,8 @@ public class ItemService {
    * @param id 商品 id
    * @return 検証結果
    */
-  private boolean isSameTitleExistNotId(Api api) {
-    Api product = itemRepository.findByTitleEqualsAndIdNot(api.getTitle(), api.getId());
+  private boolean isSameTitleExistNotId(Product api) {
+    Product product = itemRepository.findByTitleEqualsAndIdNot(api.getTitle(), api.getId());
     return product != null;
   }
 }

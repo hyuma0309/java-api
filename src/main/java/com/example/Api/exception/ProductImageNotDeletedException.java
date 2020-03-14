@@ -5,11 +5,11 @@ package com.example.Api.exception;
  *
  * @author asada
  */
-public class ItemImageNotDeletedException extends RuntimeException {
+public class ProductImageNotDeletedException extends RuntimeException {
 
   private static final long serialVersionUID = -7626616366228158111L;
 
-  public ItemImageNotDeletedException(String message) {
+  public ProductImageNotDeletedException(String message) {
     super(message);
   }
 }

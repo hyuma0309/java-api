@@ -23,9 +23,9 @@ import java.time.LocalDateTime;
  * @author asada
  */
 @Entity
-@Table(name = "items")
+@Table(name = "products")
 @Data
-public class Api {
+public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -43,7 +43,7 @@ public class Api {
   @Max(value = 1000000, message = "{validation.description-too-height}")
   private Integer price;
 
-  private String imagepath;
+  private String imagePath;
 
   @CreationTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

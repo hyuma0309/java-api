@@ -1,6 +1,6 @@
 package com.example.Api.repository;
 
-import com.example.Api.entitiy.Api;
+import com.example.Api.entitiy.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,14 +12,14 @@ import java.util.List;
  * @author asada
  */
 @Repository
-public interface ItemRepository extends JpaRepository<Api, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
   /**
    * タイトルが部分一致の商品を取得
    *
    * @param title 商品タイトル
    * @return 商品情報のリスト
    */
-  List<Api> findByTitleContaining(String title);
+  List<Product> findByTitleContaining(String title);
 
   /**
    * タイトルが完全一致の商品を取得
@@ -27,7 +27,7 @@ public interface ItemRepository extends JpaRepository<Api, Long> {
    * @param title 商品タイトル
    * @return 一件の商品情報
    */
-  Api findByTitleEquals(String title);
+  Product findByTitleEquals(String title);
 
   /**
    * IDが異なる同一タイトルの商品を取得
@@ -36,5 +36,5 @@ public interface ItemRepository extends JpaRepository<Api, Long> {
    * @param id 商品ID
    * @return 一件の商品情報
    */
-  Api findByTitleEqualsAndIdNot(String title, long id);
+  Product findByTitleEqualsAndIdNot(String title, long id);
 }

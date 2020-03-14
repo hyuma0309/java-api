@@ -5,10 +5,10 @@ package com.example.Api.exception;
  *
  * @author asada
  */
-public class ItemNotFoundException extends RuntimeException {
-    private static final long serialVersionUID = 5179398220343773826L;
+public class ProductNotFoundException extends RuntimeException {
+  private static final long serialVersionUID = 5179398220343773826L;
 
-    public ItemNotFoundException(Long id) {
+  public ProductNotFoundException(Long id) {
     super("idが" + id + "の商品は見つかりませんでした。");
   }
 }

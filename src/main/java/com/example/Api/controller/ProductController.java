@@ -1,7 +1,7 @@
 package com.example.api.controller;
 
-import com.example.Api.entitiy.Api;
-import com.example.Api.service.ItemService;
+import com.example.Api.entitiy.Product;
+import com.example.Api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -29,24 +29,24 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/products")
-public class ItemController {
-  private final ItemService itemService;
+public class ProductController {
+  private final ProductService itemService;
 
   @Autowired
-  public ItemController(ItemService itemService) {
+  public ProductController(ProductService itemService) {
     this.itemService = itemService;
   }
 
   /**
-   * 商品全件取得
+   * 商品検索
    *
-   * @return 商品情報全件
+   * @param title 検索キーワード
+   * @return 検索結果
    */
   @GetMapping("")
-  // HTTPステータスとして、”200 OK”を設定するため、value属性にはHttpStatus.OKを設定する。
   @ResponseStatus(HttpStatus.OK)
-  public List<Api> index() {
-    return itemService.findAll();
+  public List<Product> search(@RequestParam String title) {
+    return itemService.search(title);
   }
 
   /**
@@ -58,7 +58,7 @@ public class ItemController {
   @PostMapping("")
   // HTTPステータスとして、”201 Created”を設定するため、value属性にはHttpStatus.CREATEDを設定する。
   @ResponseStatus(HttpStatus.CREATED)
-  public Api create(@RequestBody @Validated Api item) {
+  public Product create(@RequestBody @Validated Product item) {
     return itemService.create(item);
   }
 
@@ -70,7 +70,7 @@ public class ItemController {
    */
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Api show(@PathVariable Long id) {
+  public Product show(@PathVariable Long id) {
     return itemService.findItem(id);
   }
 
@@ -83,7 +83,7 @@ public class ItemController {
    */
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Api update(@PathVariable Long id, @RequestBody @Validated Api item) {
+  public Product update(@PathVariable Long id, @RequestBody @Validated Product item) {
     return itemService.update(id, item);
   }
 
@@ -105,7 +105,7 @@ public class ItemController {
    * @param id 商品ID
    * @return 画像データ HttpEntity<byte[]>
    */
-  @GetMapping("{id}/image")
+  @GetMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)
   public HttpEntity<byte[]> getImage(@PathVariable Long id) throws IOException {
     return itemService.getImage(id);
@@ -118,9 +118,9 @@ public class ItemController {
    * @param file アップロードファイル
    * @return item
    */
-  @PatchMapping("{id}/image")
+  @PatchMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)
-  public Api uploadImage(
+  public Product uploadImage(
       @PathVariable Long id, @RequestParam(name = "productImage") MultipartFile file) {
     return itemService.uploadImage(id, file);
   }
@@ -130,21 +130,9 @@ public class ItemController {
    *
    * @param id 商品ID
    */
-  @DeleteMapping("{id}/image")
+  @DeleteMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)
-  public Api deleteImage(@PathVariable Long id) {
+  public Product deleteImage(@PathVariable Long id) {
     return itemService.deleteImage(id);
-  }
-
-  /**
-   * 商品検索
-   *
-   * @param keyword 検索キーワード
-   * @return 検索結果
-   */
-  @GetMapping("search")
-  @ResponseStatus(HttpStatus.OK)
-  public List<Api> search(@RequestParam String keyword) {
-    return itemService.search(keyword);
   }
 }

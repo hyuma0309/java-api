@@ -1,6 +1,6 @@
 package com.example.Api.service;
 
-import com.example.Api.exception.ItemImageNotDeletedException;
+import com.example.Api.exception.ProductImageNotDeletedException;
 import com.example.Api.exception.UnsupportedMediaTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,6 +59,6 @@ class ImageService {
    */
   void deleteFile(String imagePath) {
     File file = new File(uploadDir + imagePath);
-    if (!file.delete()) throw new ItemImageNotDeletedException("商品画像の削除に失敗しました: " + uploadDir + imagePath);
+    if (!file.delete()) throw new ProductImageNotDeletedException("商品画像の削除に失敗しました: " + uploadDir + imagePath);
   }
 }

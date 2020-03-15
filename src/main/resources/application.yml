@@ -13,7 +13,10 @@ spring:
   servlet:
     multipart:
       enabled: true
-      file-size-threshold: 2KB
-      max-file-size: 50MB
-      max-request-size: 50MB
+      max-file-size: 100KB
+  messages:
+    basename: messages
+    cache-duration: -1
+    encoding: UTF-8
+
 uploadDir: src/main/resources/static/

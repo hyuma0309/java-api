@@ -7,10 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProjectTodolistApplicationTests {
+public class RestfulapiApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
-
+  @Test
+  public void contextLoads() {}
 }

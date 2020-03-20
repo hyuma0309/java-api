@@ -22,5 +22,8 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
+  profiles:
+    active: local
+
 
 uploadDir: src/main/resources/static/

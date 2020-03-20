@@ -1,13 +1,16 @@
 package com.example.Api.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.jws.WebResult;
@@ -17,6 +20,7 @@ import javax.jws.WebResult;
  *
  * @author asada
  */
+@Slf4j
 @RestControllerAdvice
 public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -25,7 +29,7 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleItemNotFoundException(
       ProductNotFoundException ex, WebResult request) {
     return super.handleExceptionInternal(
-        ex, "handleItemNotFoundException", null, HttpStatus.NOT_FOUND, (WebRequest) request);
+        ex, "商品情報が見つかりません", null, HttpStatus.NOT_FOUND, (WebRequest) request);
   }
 
   /** 画像の削除に失敗した時の呼び出し */
@@ -58,14 +62,23 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpHeaders headers,
       HttpStatus status,
       WebRequest request) {
-    return handleExceptionInternal(ex, "正しい値を入力してください", headers, status, request);
+    log.warn(ex.getMessage(), ex);
+    return super.handleExceptionInternal(ex, "正しい値を入力してください", headers, status, request);
   }
 
   /** {@inheritDoc} */
   @Override
   protected ResponseEntity<Object> handleTypeMismatch(
       TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    return handleExceptionInternal(ex, "無効なURLのため表示できません", headers, status, request);
+    return super.handleExceptionInternal(ex, "パラメーターが不正な書式です", headers, status, request);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected ResponseEntity<Object> handleNoHandlerFoundException(
+      NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    log.warn(ex.getMessage(), ex);
+    return super.handleExceptionInternal(ex, "存在しないURLです", headers, status, request);
   }
 
   /** どこにもキャッチされなかったら呼ばれる */
@@ -73,5 +86,15 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
     return super.handleExceptionInternal(
         ex, "サーバーエラーが発生しました。", null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected ResponseEntity<Object> handleMissingServletRequestParameter(
+      MissingServletRequestParameterException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
+    return super.handleExceptionInternal(ex, "パラメータが不正です", headers, status, request);
   }
 }

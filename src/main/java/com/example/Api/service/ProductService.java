@@ -4,8 +4,8 @@ import com.example.Api.entitiy.Product;
 import com.example.Api.exception.AlreadyExistTitleException;
 import com.example.Api.exception.ProductNotFoundException;
 import com.example.Api.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -26,6 +26,7 @@ import java.util.Objects;
  *
  * @author asada
  */
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class ProductService {
@@ -38,14 +39,6 @@ public class ProductService {
 
   @Value("${uploadDir}")
   private String uploadDir;
-
-  @Autowired
-  public ProductService(
-      ImageService imageService, ProductRepository itemRepository, ResourceLoader resourceLoader) {
-    this.itemRepository = itemRepository;
-    this.imageService = imageService;
-    this.resourceLoader = resourceLoader;
-  }
 
   /**
    * IDで商品取得

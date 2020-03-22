@@ -2,7 +2,7 @@ package com.example.api.controller;
 
 import com.example.Api.entitiy.Product;
 import com.example.Api.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -28,14 +28,10 @@ import java.util.List;
  * @author asada
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/products")
 public class ProductController {
   private final ProductService itemService;
-
-  @Autowired
-  public ProductController(ProductService itemService) {
-    this.itemService = itemService;
-  }
 
   /**
    * 商品検索

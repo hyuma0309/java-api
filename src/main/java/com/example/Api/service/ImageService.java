@@ -37,10 +37,12 @@ class ImageService {
     //  substring()は指定された位置の文字から最後までを切り取り、新しい文字列として返すメソッド
     //  lastIndexOf()は指定された要素をリスト内でindexから後向きに検索して最後に検出された位置のインデックスを返すメソッド
     String extension = multipartFileName.substring(multipartFileName.lastIndexOf("."));
+    // 拡張子チェック
     if (!".jpeg".equalsIgnoreCase(extension)
         && !".jpg".equalsIgnoreCase(extension)
         && !".gif".equalsIgnoreCase(extension)
         && !".png".equalsIgnoreCase(extension)) throw new UnsupportedMediaTypeException("未対応の拡張子です");
+
     String random = UUID.randomUUID().toString();
     String imagePath = "image/" + random + extension;
     File file = new File(uploadDir + imagePath);

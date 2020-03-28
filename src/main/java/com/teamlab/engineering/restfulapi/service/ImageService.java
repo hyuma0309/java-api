@@ -1,7 +1,7 @@
-package com.example.Api.service;
+package com.teamlab.engineering.restfulapi.service;
 
-import com.example.Api.exception.ProductImageNotDeletedException;
-import com.example.Api.exception.UnsupportedMediaTypeException;
+import com.teamlab.engineering.restfulapi.exception.ProductImageNotDeletedException;
+import com.teamlab.engineering.restfulapi.exception.UnsupportedMediaTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,7 +41,9 @@ class ImageService {
     if (!".jpeg".equalsIgnoreCase(extension)
         && !".jpg".equalsIgnoreCase(extension)
         && !".gif".equalsIgnoreCase(extension)
-        && !".png".equalsIgnoreCase(extension)) throw new UnsupportedMediaTypeException("未対応の拡張子です");
+        && !".png".equalsIgnoreCase(extension)) {
+      throw new UnsupportedMediaTypeException("未対応の拡張子です");
+    }
 
     String random = UUID.randomUUID().toString();
     String imagePath = "image/" + random + extension;
@@ -61,6 +63,8 @@ class ImageService {
    */
   void deleteFile(String imagePath) {
     File file = new File(uploadDir + imagePath);
-    if (!file.delete()) throw new ProductImageNotDeletedException("商品画像の削除に失敗しました: " + uploadDir + imagePath);
+    if (!file.delete()) {
+      throw new ProductImageNotDeletedException("商品画像の削除に失敗しました: " + uploadDir + imagePath);
+    }
   }
 }

@@ -1,4 +1,4 @@
-package com.example.Api.exception;
+package com.teamlab.engineering.restfulapi.exception;
 
 /**
  * 画像が削除できなかった場合の例外クラス

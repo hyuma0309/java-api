@@ -1,4 +1,4 @@
-package com.example.Api;
+package com.teamlab.engineering.restfulapi;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

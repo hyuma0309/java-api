@@ -1,4 +1,4 @@
-package com.example.Api.config;
+package com.teamlab.engineering.restfulapi.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;

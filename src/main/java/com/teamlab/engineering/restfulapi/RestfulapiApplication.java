@@ -1,4 +1,4 @@
-package com.example.Api;
+package com.teamlab.engineering.restfulapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

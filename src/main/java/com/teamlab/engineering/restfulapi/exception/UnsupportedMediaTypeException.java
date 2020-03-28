@@ -1,4 +1,4 @@
-package com.example.Api.exception;
+package com.teamlab.engineering.restfulapi.exception;
 
 /**
  * 画像ファイルの拡張子の不正に対するExceptionクラス

@@ -1,4 +1,4 @@
-package com.example.Api.entitiy;
+package com.teamlab.engineering.restfulapi.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

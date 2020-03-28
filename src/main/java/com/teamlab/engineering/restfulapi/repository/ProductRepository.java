@@ -1,6 +1,6 @@
-package com.example.Api.repository;
+package com.teamlab.engineering.restfulapi.repository;
 
-import com.example.Api.entitiy.Product;
+import com.teamlab.engineering.restfulapi.entitiy.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

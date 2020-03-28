@@ -1,7 +1,7 @@
-package com.example.api.controller;
+package com.teamlab.engineering.restfulapi.controller;
 
-import com.example.Api.entitiy.Product;
-import com.example.Api.service.ProductService;
+import com.teamlab.engineering.restfulapi.entitiy.Product;
+import com.teamlab.engineering.restfulapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;

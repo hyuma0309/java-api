@@ -1,4 +1,4 @@
-package com.example.Api.exception;
+package com.teamlab.engineering.restfulapi.exception;
 
 /**
  * 存在しないURLにアクセスした時の例外クラス

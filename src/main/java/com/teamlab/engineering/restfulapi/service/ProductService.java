@@ -1,9 +1,9 @@
-package com.example.Api.service;
+package com.teamlab.engineering.restfulapi.service;
 
-import com.example.Api.entitiy.Product;
-import com.example.Api.exception.AlreadyExistTitleException;
-import com.example.Api.exception.ProductNotFoundException;
-import com.example.Api.repository.ProductRepository;
+import com.teamlab.engineering.restfulapi.entitiy.Product;
+import com.teamlab.engineering.restfulapi.exception.AlreadyExistTitleException;
+import com.teamlab.engineering.restfulapi.exception.ProductNotFoundException;
+import com.teamlab.engineering.restfulapi.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +59,9 @@ public class ProductService {
    * @return 登録した商品情報
    */
   public Product create(Product api) {
-    if (isSameTitleExist(api)) throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
+    if (isSameTitleExist(api)) {
+      throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
+    }
     Product item = new Product();
     item.setTitle(api.getTitle());
     item.setDescription(api.getDescription());
@@ -77,7 +79,9 @@ public class ProductService {
    * @return 更新した商品情報
    */
   public Product update(Long id, Product api) {
-    if (isSameTitleExistNotId(api)) throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
+    if (isSameTitleExistNotId(api)) {
+      throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
+    }
     Product item = findItem(id);
     item.setTitle(api.getTitle());
     item.setDescription(api.getDescription());
@@ -115,7 +119,9 @@ public class ProductService {
     Product item = findItem(id);
     //      Objects.nonNull＝指定された参照がnull以外の場合はtrueを返す。それ以外の場合はfalseを返す。
     //      既に画像が登録されてる場合、上書きするために削除
-    if (Objects.nonNull(item.getImagePath())) imageService.deleteFile(item.getImagePath());
+    if (Objects.nonNull(item.getImagePath())) {
+      imageService.deleteFile(item.getImagePath());
+    }
     item.setImagePath(imageService.uploadFile(file));
     return itemRepository.save(item);
   }

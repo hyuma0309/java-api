@@ -1,4 +1,4 @@
-package com.example.Api.exception;
+package com.teamlab.engineering.restfulapi.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -13,8 +13,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.jws.WebResult;
-
 /**
  * 商品情報APIの例外
  *
@@ -27,9 +25,8 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   /** ID等のリソースが無い場合に呼び出し */
   @ExceptionHandler(ProductNotFoundException.class)
   public ResponseEntity<Object> handleItemNotFoundException(
-      ProductNotFoundException ex, WebResult request) {
-    return super.handleExceptionInternal(
-        ex, "商品情報が見つかりません", null, HttpStatus.NOT_FOUND, (WebRequest) request);
+      ProductNotFoundException ex, WebRequest request) {
+    return super.handleExceptionInternal(ex, "商品情報が見つかりません", null, HttpStatus.NOT_FOUND, request);
   }
 
   /** 画像の削除に失敗した時の呼び出し */

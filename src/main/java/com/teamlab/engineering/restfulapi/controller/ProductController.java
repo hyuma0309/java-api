@@ -31,7 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/products")
 public class ProductController {
-  private final ProductService itemService;
+  private final ProductService productService;
 
   /**
    * 商品検索
@@ -39,10 +39,10 @@ public class ProductController {
    * @param title 検索キーワード
    * @return 検索結果
    */
-  @GetMapping("")
+  @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public List<Product> search(@RequestParam String title) {
-    return itemService.search(title);
+    return productService.search(title);
   }
 
   /**
@@ -51,11 +51,11 @@ public class ProductController {
    * @param item 商品情報1件
    * @return item
    */
-  @PostMapping("")
+  @PostMapping
   // HTTPステータスとして、”201 Created”を設定するため、value属性にはHttpStatus.CREATEDを設定する。
   @ResponseStatus(HttpStatus.CREATED)
-  public Product create(@RequestBody @Validated Product item) {
-    return itemService.create(item);
+  public Product create(@RequestBody @Validated Product product) {
+    return productService.create(product);
   }
 
   /**
@@ -66,21 +66,21 @@ public class ProductController {
    */
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Product show(@PathVariable Long id) {
-    return itemService.findItem(id);
+  public Product show(@PathVariable long id) {
+    return productService.findProduct(id);
   }
 
   /**
    * 商品更新
    *
    * @param id 商品ID
-   * @param item 更新する商品情報1件
-   * @return item
+   * @param product 更新する商品情報1件
+   * @return product
    */
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Product update(@PathVariable Long id, @RequestBody @Validated Product item) {
-    return itemService.update(id, item);
+  public Product update(@PathVariable Long id, @RequestBody @Validated Product product) {
+    return productService.update(id, product);
   }
 
   /**
@@ -92,7 +92,7 @@ public class ProductController {
   // 204
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(@PathVariable Long id) {
-    itemService.delete(id);
+    productService.delete(id);
   }
 
   /**
@@ -101,10 +101,11 @@ public class ProductController {
    * @param id 商品ID
    * @return 画像データ HttpEntity<byte[]>
    */
-  @GetMapping("{id}/images")
+  @GetMapping("{id}/images/{imagePath}")
   @ResponseStatus(HttpStatus.OK)
-  public HttpEntity<byte[]> getImage(@PathVariable Long id) throws IOException {
-    return itemService.getImage(id);
+  public HttpEntity<byte[]> getImage(@PathVariable Long id, @PathVariable String imagePath)
+      throws IOException {
+    return productService.getImage(id, imagePath);
   }
 
   /**
@@ -112,13 +113,13 @@ public class ProductController {
    *
    * @param id 商品ID
    * @param file アップロードファイル
-   * @return item
+   * @return product
    */
   @PatchMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)
   public Product uploadImage(
       @PathVariable Long id, @RequestParam(name = "productImage") MultipartFile file) {
-    return itemService.uploadImage(id, file);
+    return productService.uploadImage(id, file);
   }
 
   /**
@@ -129,6 +130,6 @@ public class ProductController {
   @DeleteMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)
   public Product deleteImage(@PathVariable Long id) {
-    return itemService.deleteImage(id);
+    return productService.deleteImage(id);
   }
 }

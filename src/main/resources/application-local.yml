@@ -1,8 +1,6 @@
 spring:
-  datebase:
-    url: jdbc:mysql://localhost:3306/restful_api
-    username: root
-    password:
-  setting:
-    file:
-      upload-dir: src/main/resources/static/
+  profiles:
+    include: common-local
+
+uploadDir: src/main/resources/static/image/
+

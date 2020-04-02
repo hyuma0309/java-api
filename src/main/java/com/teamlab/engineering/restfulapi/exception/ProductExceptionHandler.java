@@ -2,6 +2,8 @@ package com.teamlab.engineering.restfulapi.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Locale;
+
 /**
  * 商品情報APIの例外
  *
@@ -22,34 +26,66 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 
+  @Autowired protected MessageSource messageSource;
+
   /** ID等のリソースが無い場合に呼び出し */
   @ExceptionHandler(ProductNotFoundException.class)
-  public ResponseEntity<Object> handleItemNotFoundException(
-      ProductNotFoundException ex, WebRequest request) {
-    return super.handleExceptionInternal(ex, "商品情報が見つかりません", null, HttpStatus.NOT_FOUND, request);
+  public ResponseEntity<Object> handleProductNotFoundException(
+      ProductNotFoundException e, WebRequest request) {
+    log.warn(e.getMessage(), e);
+    return super.handleExceptionInternal(
+        e,
+        messageSource.getMessage("ProductNotFound", null, Locale.JAPAN),
+        null,
+        HttpStatus.NOT_FOUND,
+        request);
   }
 
   /** 画像の削除に失敗した時の呼び出し */
   @ExceptionHandler(ProductImageNotDeletedException.class)
-  public ResponseEntity<Object> handleItemImageNotDeletedException(
+  public ResponseEntity<Object> handleProductImageNotDeletedException(
       ProductImageNotDeletedException e, WebRequest request) {
+    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
-        e, "商品画像の削除に失敗しました", null, HttpStatus.BAD_REQUEST, request);
+        e,
+        messageSource.getMessage("ImageNotDeleted", null, Locale.JAPAN),
+        null,
+        HttpStatus.BAD_REQUEST,
+        request);
   }
 
   /** 未設定の拡張子を使用した場合の呼び出し */
   @ExceptionHandler(UnsupportedMediaTypeException.class)
   public ResponseEntity<Object> handleUnsupportedMediaTypeException(
       UnsupportedMediaTypeException e, WebRequest request) {
+    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
-        e, "商品画像の削除に失敗しました", null, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
+        e,
+        messageSource.getMessage("UnsupportedMediaType", null, Locale.JAPAN),
+        null,
+        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+        request);
   }
 
   /** 存在している商品タイトル登録時呼び出し */
   @ExceptionHandler(AlreadyExistTitleException.class)
   public ResponseEntity<Object> handleAlreadyExistTitleException(
       AlreadyExistTitleException e, WebRequest request) {
-    return super.handleExceptionInternal(e, "商品の登録に失敗しました", null, HttpStatus.BAD_REQUEST, request);
+    log.warn(e.getMessage(), e);
+    return super.handleExceptionInternal(
+        e,
+        messageSource.getMessage("AlreadyExistTitle", null, Locale.JAPAN),
+        null,
+        HttpStatus.BAD_REQUEST,
+        request);
+  }
+  /** 画像が存在しない場合の呼び出し　 */
+  @ExceptionHandler(ProductNotImageException.class)
+  public ResponseEntity<Object> handleProductNotImageException(
+      ProductNotImageException e, WebRequest request, HttpStatus status) {
+    log.warn(e.getMessage(), e);
+    return super.handleExceptionInternal(
+        e, messageSource.getMessage("NotImage", null, Locale.JAPAN), null, status, request);
   }
 
   /** {@inheritDoc} */
@@ -60,14 +96,21 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpStatus status,
       WebRequest request) {
     log.warn(ex.getMessage(), ex);
-    return super.handleExceptionInternal(ex, "正しい値を入力してください", headers, status, request);
+    return super.handleExceptionInternal(
+        ex,
+        messageSource.getMessage("MethodArgumentNotValid", null, Locale.JAPAN),
+        null,
+        status,
+        request);
   }
 
   /** {@inheritDoc} */
   @Override
   protected ResponseEntity<Object> handleTypeMismatch(
       TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    return super.handleExceptionInternal(ex, "パラメーターが不正な書式です", headers, status, request);
+    log.warn(ex.getMessage(), ex);
+    return super.handleExceptionInternal(
+        ex, messageSource.getMessage("TypeMismatch", null, Locale.JAPAN), null, status, request);
   }
 
   /** {@inheritDoc} */
@@ -75,14 +118,20 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleNoHandlerFoundException(
       NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
     log.warn(ex.getMessage(), ex);
-    return super.handleExceptionInternal(ex, "存在しないURLです", headers, status, request);
+    return super.handleExceptionInternal(
+        ex, messageSource.getMessage("NoHandlerFound", null, Locale.JAPAN), null, status, request);
   }
 
   /** どこにもキャッチされなかったら呼ばれる */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
+    log.warn(ex.getMessage(), ex);
     return super.handleExceptionInternal(
-        ex, "サーバーエラーが発生しました。", null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        ex,
+        messageSource.getMessage("handleAll", null, Locale.JAPAN),
+        null,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        request);
   }
 
   /** {@inheritDoc} */
@@ -92,6 +141,12 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpHeaders headers,
       HttpStatus status,
       WebRequest request) {
-    return super.handleExceptionInternal(ex, "パラメータが不正です", headers, status, request);
+    log.warn(ex.getMessage(), ex);
+    return super.handleExceptionInternal(
+        ex,
+        messageSource.getMessage("MissingServletRequestParameter", null, Locale.JAPAN),
+        null,
+        status,
+        request);
   }
 }

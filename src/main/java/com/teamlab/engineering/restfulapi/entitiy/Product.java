@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  * @author asada
  */
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 @Data
 public class Product {
   @Id
@@ -40,7 +40,7 @@ public class Product {
 
   @NotNull(message = "{validation.price-not-null}")
   @Min(value = 1, message = "{validation.price-too-low}")
-  @Max(value = 1000000, message = "{validation.description-too-height}")
+  @Max(value = 1000000, message = "{validation.price-too-height}")
   private Integer price;
 
   private String imagePath;

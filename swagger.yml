@@ -11,43 +11,10 @@ servers:
     description: "ローカルサーバで使用"
 
 paths:
-  /api/items:
-    get:
-      tags:
-        - items
-      summary: "商品の全件取得"
-      description: "登録されている全ての商品をjson形式で返す"
-      parameters: []
-      responses:
-        '200':
-          description: "json形式で返却"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Item'
-                example:
-                  - id: 1
-                    imagePath: image/12345.png
-                    title: 赤ペン
-                    description: 赤いペンです
-                    price: 100
-                  - id: 2
-                    imagePath: image/54321.png
-                    title: 青ペン
-                    description: 青いペンです
-                    price: 100
-        '500':
-          description: "INTERNAL_SERVER_ERROR"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/handleAllException'
-
+  /api/products:
     post:
       tags:
-        - items
+        - products
       summary: "商品の作成"
       description: "商品情報をPOSTメソッドで送信"
       parameters: []
@@ -55,9 +22,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: '#/components/schemas/product'
             example:
-              id: 3
+              id: 1
               title: 青ペン
               description: 青いペンです
               price: 100
@@ -68,8 +35,8 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: '#/components/schemas/Item'
+                products:
+                  $ref: '#/components/schemas/product'
                 example:
                   id: 3
                   imagePath: image/22332233.png
@@ -88,10 +55,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/handleAllException'
-  /api/items/{id}:
+  /api/products/{id}:
     get:
       tags:
-        - items
+        - products
       summary: "商品のID取得"
       description: "IDの商品データを１件取得し、JSON形式で返す。"
       parameters:
@@ -107,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/product'
               example:
                 id: 1
                 imagePath: image/12345.png
@@ -119,7 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handleItemNotFoundException'
+                $ref: '#/components/schemas/handleproductNotFoundException'
         '405':
           description: "パス変数に異なる型を入力した場合等"
           content:
@@ -134,7 +101,7 @@ paths:
                 $ref: '#/components/schemas/handleAllException'
     put:
       tags:
-        - items
+        - products
       summary: "商品の更新"
       description: "IDの商品を更新"
       parameters:
@@ -148,14 +115,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: '#/components/schemas/product'
       responses:
         '200':
           description: "該当するidの商品情報を更新する"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/product'
               example:
                 id: 1
                 imagePath: image/12345.png
@@ -173,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handleItemNotFoundException'
+                $ref: '#/components/schemas/handleproductNotFoundException'
         '405':
           description: "パス変数に異なる型を入力した場合等"
           content:
@@ -188,7 +155,7 @@ paths:
                 $ref: '#/components/schemas/handleAllException'
     delete:
       tags:
-        - items
+        - products
       summary: "商品の削除"
       description: "該当するidの商品情報を削除する"
       parameters:
@@ -206,41 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handleItemNotFoundException'
-        '405':
-          description: "パス変数に異なる型を入力した場合等"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/handleTypeMismatch'
-        '500':
-          description: "INTERNAL_SERVER_ERROR"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/handleAllException'
-  /api/items/{id}/image:
-    get:
-      tags:
-        - items
-      summary: "商品の画像取得"
-      description: "該当するidの商品に商品画像が登録されている場合に表示する"
-      parameters:
-        - name: id
-          in: path
-          description: 画像ファイル名
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: "該当するidの商品画像を表示する"
-        '404':
-          description: "存在しない商品IDを入力した場合/商品は存在するけど商品画像が登録されていない場合"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/handleItemNotFoundException'
+                $ref: '#/components/schemas/handleproductNotFoundException'
         '405':
           description: "パス変数に異なる型を入力した場合等"
           content:
@@ -254,9 +187,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/handleAllException'
 
-    put:
+  /api/products/{id}/image/{imagePath}:
+    get:
       tags:
-        - items
+        - products
+      summary: "商品の画像取得"
+      description: "該当するidの商品に商品画像が登録されている場合に表示する"
+      parameters:
+        - name: id
+            in: path
+            description: 取得したい画像の商品ID
+            required: true
+            schema:
+              type: integer
+              format: int64
+        - name: imagePath
+            in: path
+            description: 取得したい商品画像の画像パス
+            required: true
+            schema:
+              type: string
+      responses:
+        '200':
+          description: "該当するidの商品画像を表示する"
+        '404':
+          description: "存在しない商品IDを入力した場合/商品は存在するけど商品画像が登録されていない場合"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleproductNotFoundException'
+        '405':
+          description: "パス変数に異なる型を入力した場合等"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleTypeMismatch'
+        '500':
+          description: "INTERNAL_SERVER_ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/handleAllException'
+
+    patch:
+      tags:
+        - products
       summary: "商品の画像のアップロード"
       description: "id値を持つ商品に商品画像を登録する(multipart/form-data形式)"
       parameters:
@@ -279,7 +254,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Item"
+                $ref: "#/components/schemas/product"
               example:
                 id: 2
                 imagePath: image/55555555.png
@@ -291,7 +266,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handleItemNotFoundException'
+                $ref: '#/components/schemas/handleproductNotFoundException'
         '405':
           description: "パス変数に異なる型を入力した場合等"
           content:
@@ -314,7 +289,7 @@ paths:
                   - $ref: '#/components/schemas/handleAllException'
     delete:
       tags:
-        - items
+        - products
       summary: "商品画像の削除"
       description: "id値を持つ商品の商品画像を削除する。"
       parameters:
@@ -331,7 +306,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Item"
+                $ref: "#/components/schemas/product"
               example:
                 id: 1
                 imagePath: null
@@ -343,7 +318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handleItemNotFoundException'
+                $ref: '#/components/schemas/handleproductNotFoundException'
         '405':
           description: "パス変数に異なる型を入力した場合等"
           content:
@@ -356,12 +331,12 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/handleItemImageNotDeletedException'
+                  - $ref: '#/components/schemas/handleproductImageNotDeletedException'
                   - $ref: '#/components/schemas/handleAllException'
-  /api/items/search:
+  /api/products/search:
     get:
       tags:
-        - items
+        - products
       summary: "商品の商品タイトル検索"
       description: "商品タイトルによる部分一致検索をする"
       parameters:
@@ -376,7 +351,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: '#/components/schemas/product'
               example:
                 id: 1
                 imagePath: image/123456789.png
@@ -392,7 +367,7 @@ paths:
 
 components:
   schemas:
-    Item:
+    product:
       type: object
       required:
         - id
@@ -440,7 +415,7 @@ components:
           type: string
           example: '正しい値を入力してください。'
 
-    handleItemNotFoundException:
+    handleproductNotFoundException:
       type: object
       properties:
         message:
@@ -454,7 +429,7 @@ components:
           type: string
           example: '無効なURLのため表示できません'
 
-    handleItemImageNotDeletedException:
+    handleproductImageNotDeletedException:
       type: object
       properties:
         message:

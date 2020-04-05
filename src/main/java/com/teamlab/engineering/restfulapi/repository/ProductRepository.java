@@ -37,4 +37,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    * @return 一件の商品情報
    */
   Product findByTitleEqualsAndIdNot(String title, long id);
+
+  /**
+   * 全商品検索（更新日時降順）
+   *
+   * @return 商品情報
+   */
+  List<Product> findAllByOrderByUpdateTimeDesc();
 }

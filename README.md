@@ -31,46 +31,64 @@
  └── src
     ├── main
     │   ├── java
-    │   │   └── com.example
+    │   │   └── com.teamlab.engineering.restfulapi
+    │   │           ├── config
+    │   │           │   └── MessageSourceConfiguration
     │   │           ├── controller
-    │   │           │   └── ItemController.java
+    │   │           │   └── ProductController.java
+    │   │           ├── dto
+    │   │           │   └── ProductDto.java
     │   │           ├── entity
-    │   │           │   └── Api.java
+    │   │           │   └── Product.java
     │   │           ├── exception
-    │   │           │   ├── ItemExceptionHandler.java
-    │   │           │   └── ItemNotFoundException.java
-    │   │           │   └── ItemImageNotDeletedException.java
+    │   │           │   ├── AlreadyExistTitleException.java
+    │   │           │   ├── ProductExceptionHandler.java
+    │   │           │   ├── ProductImageNotDeletedException.java
+    │   │           │   ├── ProductNotFoundException.java
+    │   │           │   └── ProductNotImageException.java
+    │   │           │   └── UnsupportedMediaTypeException.java
+    │   │           ├── form
+    │   │           │   └── ProductForm.java
     │   │           ├── repository
-    │   │           │   └── ItemRepository.java
+    │   │           │   └── ProductRepository.java
     │   │           └── service
-    │   │               └── ImageService.java
-    │   │               └── ItemService.java
+    │   │               └── ProductService.java
+    │   │               └── ProductService.java
     │   └── resources
     │       └── static
     │       |    ├── image
     |       |__ application.yml
+    |       |__ application-local.yml
+    |       |__ messages.properties
+    |       |__ schema.sql
     └── test
         └── java
             └── com
-                └── example
-                    └── Api
-                        └── ProjectTodolistApplicationTests.java
+                └── teamlab
+                    └── engineering
+                        └── restfulapi
+                            └── PRestfulapiApplicationTests.java
+
+
                         
 ```
   
 ## DB設計
 
-Database名：api
+Database名：restful_api
 
-table:items
+table:product
 
-| Field | Type | Null | Key | Defalt | Extra |
-|:-----------|:------------|:------------|:------------|:------------|:------------|
-| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
-| name       | varchar(100)          | YES  |     | NULL    |                |
-| price   | int(11)                | YES  |     | NULL    |                |
-| description      |  varchar(255)        | NO   |     | NULL    |                |
-| image |  varchar(255)            | YES  |     | NULL    |                |
+| Field       | Type                | Null | Key | Default           | Extra                       |
++-------------+---------------------+------+-----+-------------------+-----------------------------+
+| id          | bigint(20) unsigned | NO   | PRI | NULL              | auto_increment              |
+| title       | varchar(100)        | NO   | UNI | NULL              |                             |
+| description | varchar(500)        | NO   |     | NULL              |                             |
+| price       | int(10) unsigned    | NO   |     | NULL              |                             |
+| image_path  | text                | YES  |     | NULL              |                             |
+| create_time | datetime            | NO   |     | CURRENT_TIMESTAMP |                             |
+| update_time | datetime            | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-------------+---------------------+------+-----+-------------------+-----------------------------+
 
 
 
@@ -81,8 +99,7 @@ table:items
 **DBの作成**
 
 ```
-$ mysql -u root
-mysql> CREATE DATABASE api; 
+mysql> CREATE DATABASE restful_api; 
 ```
 
 **git clone**
@@ -97,4 +114,4 @@ git clone git@bitbucket.org:teamlabengineering/asada-restapi.git
 
 **ブラウザで開く**
 
-`http://localhost:8080/api/items`
+`http://localhost:8080/api/products`

@@ -1,6 +1,8 @@
 spring:
   profiles:
     include: common-local
+  jpa:
+    show-sql: true
 
 uploadDir: src/main/resources/static/image/
 

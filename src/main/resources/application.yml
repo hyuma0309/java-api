@@ -17,7 +17,6 @@ spring:
     database: MYSQL
     hibernate:
     ddl-auto: none
-    show-sql: true
 
   servlet:
     multipart:
@@ -35,6 +34,8 @@ spring:
   resources:
     add-mappings: false
 
+  jackson:
+    default-property-inclusion: non_null
 
 
 

@@ -1,6 +1,8 @@
 package com.teamlab.engineering.restfulapi.controller;
 
+import com.teamlab.engineering.restfulapi.dto.ProductDto;
 import com.teamlab.engineering.restfulapi.entitiy.Product;
+import com.teamlab.engineering.restfulapi.form.ProductForm;
 import com.teamlab.engineering.restfulapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -41,8 +43,13 @@ public class ProductController {
    */
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<Product> search(@RequestParam String title) {
-    return productService.search(title);
+  public List<ProductDto> search(@RequestParam(required = false) String title) {
+    if (title == null) {
+      List<Product> allProducts = productService.getAllProducts();
+      return productService.convertToProductDtoList(allProducts);
+    }
+    List<Product> productEntity = productService.search(title);
+    return productService.convertToProductDtoList(productEntity);
   }
 
   /**
@@ -54,8 +61,11 @@ public class ProductController {
   @PostMapping
   // HTTPステータスとして、”201 Created”を設定するため、value属性にはHttpStatus.CREATEDを設定する。
   @ResponseStatus(HttpStatus.CREATED)
-  public Product create(@RequestBody @Validated Product product) {
-    return productService.create(product);
+  public ProductDto create(@RequestBody @Validated ProductForm ProductForm) {
+    Product productEntity =
+        productService.create(
+            ProductForm.getTitle(), ProductForm.getDescription(), ProductForm.getPrice());
+    return productService.convertToDto(productEntity);
   }
 
   /**
@@ -66,8 +76,9 @@ public class ProductController {
    */
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Product show(@PathVariable long id) {
-    return productService.findProduct(id);
+  public ProductDto show(@PathVariable long id) {
+    Product productEntity = productService.findProduct(id);
+    return productService.convertToDto(productEntity);
   }
 
   /**
@@ -79,8 +90,11 @@ public class ProductController {
    */
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Product update(@PathVariable Long id, @RequestBody @Validated Product product) {
-    return productService.update(id, product);
+  public ProductDto update(@PathVariable Long id, @RequestBody @Validated ProductForm ProductForm) {
+    Product productEntity =
+        productService.update(
+            id, ProductForm.getTitle(), ProductForm.getDescription(), ProductForm.getPrice());
+    return productService.convertToDto(productEntity);
   }
 
   /**
@@ -112,24 +126,14 @@ public class ProductController {
    * 商品画像アップロード
    *
    * @param id 商品ID
-   * @param file アップロードファイル
-   * @return product
+   * @param productImage アップロードファイル
+   * @return productEntity
    */
   @PatchMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)
-  public Product uploadImage(
+  public ProductDto uploadImage(
       @PathVariable Long id, @RequestParam(name = "productImage") MultipartFile file) {
-    return productService.uploadImage(id, file);
-  }
-
-  /**
-   * 画像情報の削除
-   *
-   * @param id 商品ID
-   */
-  @DeleteMapping("{id}/images")
-  @ResponseStatus(HttpStatus.OK)
-  public Product deleteImage(@PathVariable Long id) {
-    return productService.deleteImage(id);
+    Product productEntity = productService.uploadImage(id, file);
+    return productService.convertToDto(productEntity);
   }
 }

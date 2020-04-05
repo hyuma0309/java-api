@@ -63,7 +63,7 @@ class ImageService {
       throw new RuntimeException(e);
     }
     String random = UUID.randomUUID().toString();
-    String imagePath = "image/" + random + extension;
+    String imagePath = random + extension;
     File file = new File(uploadDir + imagePath);
     try {
       multipartFile.transferTo(file.toPath());

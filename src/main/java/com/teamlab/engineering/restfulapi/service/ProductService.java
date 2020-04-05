@@ -1,5 +1,6 @@
 package com.teamlab.engineering.restfulapi.service;
 
+import com.teamlab.engineering.restfulapi.dto.ProductDto;
 import com.teamlab.engineering.restfulapi.entitiy.Product;
 import com.teamlab.engineering.restfulapi.exception.AlreadyExistTitleException;
 import com.teamlab.engineering.restfulapi.exception.ProductNotFoundException;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 商品サービス
@@ -57,13 +59,18 @@ public class ProductService {
    * @param title 商品タイトル
    * @param description 商品説明分
    * @param price 商品価格
+   * @param api
    * @return 登録した商品情報
    */
-  public Product create(Product api) {
-    if (isSameTitleExist(api)) {
-      throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
+  public Product create(String title, String description, Integer price) {
+    if (isSameTitleExist(title)) {
+      throw new AlreadyExistTitleException("既にその" + title + "は存在しています");
     }
-    return productRepository.save(api);
+    Product product = new Product();
+    product.setTitle(title);
+    product.setDescription(description);
+    product.setPrice(price);
+    return productRepository.save(product);
   }
 
   /**
@@ -75,14 +82,14 @@ public class ProductService {
    * @param price 商品価格
    * @return 更新した商品情報
    */
-  public Product update(Long id, Product api) {
-    if (isSameTitleExistNotId(api)) {
-      throw new AlreadyExistTitleException("既にその" + api.getTitle() + "は存在しています");
+  public Product update(long id, String title, String description, Integer price) {
+    if (isSameTitleExistNotId(title, id)) {
+      throw new AlreadyExistTitleException("既にその" + title + "は存在しています");
     }
     Product product = findProduct(id);
-    product.setTitle(api.getTitle());
-    product.setDescription(api.getDescription());
-    product.setPrice(api.getPrice());
+    product.setTitle(title);
+    product.setDescription(description);
+    product.setPrice(price);
     return productRepository.save(product);
   }
 
@@ -94,6 +101,15 @@ public class ProductService {
    */
   public List<Product> search(String title) {
     return productRepository.findByTitleContaining(title);
+  }
+
+  /**
+   * 商品全検索
+   *
+   * @return 商品情報
+   */
+  public List<Product> getAllProducts() {
+    return productRepository.findAllByOrderByUpdateTimeDesc();
   }
 
   /**
@@ -165,22 +181,51 @@ public class ProductService {
    * 同一タイトルの商品が存在するかを検証
    *
    * @param title 商品タイトル
+   * @param api
    * @return 検証結果
    */
-  private boolean isSameTitleExist(Product api) {
-    Product product = productRepository.findByTitleEquals(api.getTitle());
+  private boolean isSameTitleExist(String title) {
+    Product product = productRepository.findByTitleEquals(title);
     return product != null;
   }
 
   /**
-   * IDが言葉る同一タイトルの商品が存在するかを検証
+   * IDが異なる同一タイトルの商品が存在するかを検証
    *
    * @param title 商品タイトル
    * @param id 商品 id
+   * @param api
    * @return 検証結果
    */
-  private boolean isSameTitleExistNotId(Product api) {
-    Product product = productRepository.findByTitleEqualsAndIdNot(api.getTitle(), api.getId());
+  private boolean isSameTitleExistNotId(String title, long id) {
+    Product product = productRepository.findByTitleEqualsAndIdNot(title, id);
     return product != null;
+  }
+
+  /**
+   * 商品情報の格納
+   *
+   * @param productEntityList 商品情報
+   * @return 商品情報
+   */
+  public List<ProductDto> convertToProductDtoList(List<Product> productEntityList) {
+    return productEntityList.stream().map(this::convertToDto).collect(Collectors.toList());
+  }
+
+  /**
+   * entityからdtoへ変換する
+   *
+   * @param product Product
+   * @return dto ProductDto
+   */
+  public ProductDto convertToDto(Product Product) {
+    return new ProductDto(
+        Product.getId(),
+        Product.getTitle(),
+        Product.getDescription(),
+        Product.getPrice(),
+        Product.getImagePath(),
+        Product.getCreateTime(),
+        Product.getUpdateTime());
   }
 }

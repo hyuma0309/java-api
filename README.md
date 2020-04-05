@@ -83,7 +83,7 @@ table:product
 |:-----------|:------------|:------------|:------------|:------------|:------------|
 | id         |  bigint(20) unsigned  | NO   | PRI | NULL    | auto_increment |
 | title       | varchar(100)          | NO  | UNI    | NULL    |                |
-| price   | int(10) unsigned                | NO  |     | NULL    |                |
+| price   | int                 | NO  |     | NULL    |                |
 | description      |  varchar(500)        | NO   |     | NULL    |                |
 | image_path |  text            | YES  |     | NULL    |                |
 | create_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    |                |

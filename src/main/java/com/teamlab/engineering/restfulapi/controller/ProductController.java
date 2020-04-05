@@ -55,8 +55,8 @@ public class ProductController {
   /**
    * 商品登録
    *
-   * @param item 商品情報1件
-   * @return item
+   * @param productForm 商品登録フォーム
+   * @return 商品情報登録
    */
   @PostMapping
   // HTTPステータスとして、”201 Created”を設定するため、value属性にはHttpStatus.CREATEDを設定する。
@@ -85,8 +85,8 @@ public class ProductController {
    * 商品更新
    *
    * @param id 商品ID
-   * @param product 更新する商品情報1件
-   * @return product
+   * @param ProductForm 更新する商品情報1件
+   * @return 更新する商品情報
    */
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -113,7 +113,8 @@ public class ProductController {
    * 画像の取得
    *
    * @param id 商品ID
-   * @return 画像データ HttpEntity<byte[]>
+   * @param imagePath 商品画像パス
+   * @return 商品画像
    */
   @GetMapping("{id}/images/{imagePath}")
   @ResponseStatus(HttpStatus.OK)
@@ -126,8 +127,8 @@ public class ProductController {
    * 商品画像アップロード
    *
    * @param id 商品ID
-   * @param productImage アップロードファイル
-   * @return productEntity
+   * @param file アップロードファイル
+   * @return 画像を更新した商品情報
    */
   @PatchMapping("{id}/images")
   @ResponseStatus(HttpStatus.OK)

@@ -6,6 +6,11 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * 商品DTO
+ *
+ * @author asada
+ */
 @Data
 @AllArgsConstructor
 public class ProductDto {

@@ -79,17 +79,16 @@ Database名：restful_api
 
 table:product
 
-+-------------+---------------------+------+-----+-------------------+-----------------------------+
-| Field       | Type                | Null | Key | Default           | Extra                       |
-+-------------+---------------------+------+-----+-------------------+-----------------------------+
-| id          | bigint(20) unsigned | NO   | PRI | NULL              | auto_increment              |
-| title       | varchar(100)        | NO   | UNI | NULL              |                             |
-| description | varchar(500)        | NO   |     | NULL              |                             |
-| price       | int(10) unsigned    | NO   |     | NULL              |                             |
-| image_path  | text                | YES  |     | NULL              |                             |
-| create_time | datetime            | NO   |     | CURRENT_TIMESTAMP |                             |
-| update_time | datetime            | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-+-------------+---------------------+------+-----+-------------------+-----------------------------+
+| Field | Type | Null | Key | Defalt | Extra |
+|:-----------|:------------|:------------|:------------|:------------|:------------|
+| id         |  bigint(20) unsigned  | NO   | PRI | NULL    | auto_increment |
+| title       | varchar(100)          | NO  | UNI    | NULL    |                |
+| price   | int(10) unsigned                | NO  |     | NULL    |                |
+| description      |  varchar(500)        | NO   |     | NULL    |                |
+| image_path |  text            | YES  |     | NULL    |                |
+| create_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    |                |
+| update_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    | on update CURRENT_TIMESTAMP                 |
+
 
 
 

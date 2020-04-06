@@ -15,7 +15,7 @@ paths:
     get:
       tags:
         - products
-      summary: "商品の商品タイトル検索"
+      summary: "商品取得API（複数件）"
       description: "商品タイトルによる部分一致検索をする"
       parameters:
         - in: query
@@ -40,7 +40,7 @@ paths:
     post:
       tags:
         - products
-      summary: "商品の作成"
+      summary: "商品登録API（1件"
       description: "商品情報をPOSTメソッドで送信"
       requestBody:
         description: 登録する商品内容
@@ -72,7 +72,7 @@ paths:
     get:
       tags:
         - products
-      summary: "商品のID取得"
+      summary: "商品取得API（1件）"
       description: "IDの商品データを１件取得し、JSON形式で返す。"
       parameters:
         - name: id
@@ -110,7 +110,7 @@ paths:
     put:
       tags:
         - products
-      summary: "商品の更新"
+      summary: "商品変更API（1件）"
       description: "IDの商品を更新"
       parameters:
         - name: id
@@ -159,7 +159,7 @@ paths:
     delete:
       tags:
         - products
-      summary: "商品の削除"
+      summary: "商品削除API（1件）"
       description: "該当するidの商品情報を削除する"
       parameters:
         - name: id
@@ -194,7 +194,7 @@ paths:
     patch:
       tags:
         - products
-      summary: "商品の画像のアップロード"
+      summary: "商品画像更新API（1件）"
       description: "id値を持つ商品に商品画像を登録する(multipart/form-data形式)"
       parameters:
         - name: id
@@ -249,7 +249,7 @@ paths:
     get:
       tags:
         - products
-      summary: "商品の画像取得"
+      summary: "商品画像取得API（1件"
       description: "該当するidの商品に商品画像が登録されている場合に表示する"
       parameters:
         - name: id
@@ -370,16 +370,9 @@ components:
           type: string
           example: '無効なURLのため表示できません'
 
-    handleproductImageNotDeletedException:
-      type: object
-      properties:
-        message:
-          type: string
-          example: '画像の削除に失敗しました'
-
     handleUnsupportedMediaTypeException:
       type: object
       properties:
         message:
           type: string
-          example: 'この拡張子はしようできません'
+          example: 'この拡張子は使用できません'

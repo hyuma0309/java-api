@@ -15,16 +15,16 @@ import javax.validation.constraints.Size;
  */
 @Data
 public class ProductForm {
-  @NotBlank(message = "{validation.title-not-blank}")
+  @NotBlank(message = "{error.validation.title-not-blank}")
   @Size(max = 100, message = "{validation.title-too-long}")
   private String title;
 
-  @NotBlank(message = "{validation.description-not-blank}")
+  @NotBlank(message = "{error.validation.description-not-blank}")
   @Size(max = 500, message = "{validation.description-too-long}")
   private String description;
 
-  @NotNull(message = "{validation.price-not-null}")
-  @Min(value = 1, message = "{validation.price-too-low}")
-  @Max(value = 1000000, message = "{validation.price-too-height}")
+  @NotNull(message = "{error.validation.price-not-null}")
+  @Min(value = 1, message = "{error.validation.price-too-low}")
+  @Max(value = 1000000, message = "{error.validation.price-too-height}")
   private Integer price;
 }

@@ -99,8 +99,8 @@ public class ProductService {
    * @param title 商品タイトル
    * @return 検索結果の商品情報リスト
    */
-  public List<Product> search(String title) {
-    return productRepository.findByTitleContaining(title);
+  public List<ProductDto> search(String title) {
+    return convertToProductDtoList(productRepository.findByTitleContaining(title));
   }
 
   /**
@@ -108,8 +108,8 @@ public class ProductService {
    *
    * @return 商品情報
    */
-  public List<Product> getAllProducts() {
-    return productRepository.findAllByOrderByUpdateTimeDesc();
+  public List<ProductDto> getAllProducts() {
+    return convertToProductDtoList(productRepository.findAllByOrderByUpdateTimeDesc());
   }
 
   /**
@@ -218,14 +218,7 @@ public class ProductService {
    * @param product Product
    * @return dto ProductDto
    */
-  public ProductDto convertToDto(Product Product) {
-    return new ProductDto(
-        Product.getId(),
-        Product.getTitle(),
-        Product.getDescription(),
-        Product.getPrice(),
-        Product.getImagePath(),
-        Product.getCreateTime(),
-        Product.getUpdateTime());
+  public ProductDto convertToDto(Product product) {
+    return new ProductDto(product);
   }
 }

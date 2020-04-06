@@ -1,9 +1,9 @@
 server:
   port: 8080
+
 spring:
   profiles:
     active: local
-    include: common
 
   datasource:
     url: jdbc:mysql://localhost:3306/restful_api

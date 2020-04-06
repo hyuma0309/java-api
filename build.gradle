@@ -5,7 +5,7 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.example'
+group = 'com.teamlab.engineering'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -32,7 +32,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation "commons-io:commons-io:2.6"
+    implementation 'org.apache.commons:commons-lang3:3.9'
 
     compile "org.springframework.boot:spring-boot-starter-thymeleaf"
 

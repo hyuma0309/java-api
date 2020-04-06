@@ -5,6 +5,7 @@ import com.teamlab.engineering.restfulapi.entitiy.Product;
 import com.teamlab.engineering.restfulapi.form.ProductForm;
 import com.teamlab.engineering.restfulapi.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -44,12 +45,10 @@ public class ProductController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public List<ProductDto> search(@RequestParam(required = false) String title) {
-    if (title == null) {
-      List<Product> allProducts = productService.getAllProducts();
-      return productService.convertToProductDtoList(allProducts);
+    if (StringUtils.isBlank(title)) {
+      return productService.getAllProducts();
     }
-    List<Product> productEntity = productService.search(title);
-    return productService.convertToProductDtoList(productEntity);
+    return productService.search(title);
   }
 
   /**

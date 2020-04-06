@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    include: common-local
   jpa:
     show-sql: true
 

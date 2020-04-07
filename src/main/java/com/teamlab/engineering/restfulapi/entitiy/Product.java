@@ -1,7 +1,6 @@
 package com.teamlab.engineering.restfulapi.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,7 +23,6 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "product")
-@Data
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,4 +50,60 @@ public class Product {
   @UpdateTimestamp
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime updateTime;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getDescription() {
+    return title;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Integer getPrice() {
+    return price;
+  }
+
+  public void setPrice(Integer price) {
+    this.price = price;
+  }
+
+  public String getImagePath() {
+    return imagePath;
+  }
+
+  public void setImagePath(String imagePath) {
+    this.imagePath = imagePath;
+  }
+
+  public LocalDateTime getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(LocalDateTime createTime) {
+    this.createTime = createTime;
+  }
+
+  public LocalDateTime getUpdateTime() {
+    return updateTime;
+  }
+
+  public void setUpdateTime(LocalDateTime updateTime) {
+    this.updateTime = updateTime;
+  }
 }

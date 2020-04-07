@@ -6,7 +6,6 @@ import com.teamlab.engineering.restfulapi.exception.AlreadyExistTitleException;
 import com.teamlab.engineering.restfulapi.exception.ProductNotFoundException;
 import com.teamlab.engineering.restfulapi.exception.ProductNotImageException;
 import com.teamlab.engineering.restfulapi.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
  *
  * @author asada
  */
-@RequiredArgsConstructor
 @Service
 @Transactional
 public class ProductService {
@@ -42,6 +40,15 @@ public class ProductService {
 
   @Value("${uploadDir}")
   private String uploadDir;
+
+  public ProductService(
+      ProductRepository productRepository,
+      ImageService imageService,
+      ResourceLoader resourceLoader) {
+    this.productRepository = productRepository;
+    this.imageService = imageService;
+    this.resourceLoader = resourceLoader;
+  }
 
   /**
    * IDで商品取得

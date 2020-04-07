@@ -4,7 +4,6 @@ import com.teamlab.engineering.restfulapi.dto.ProductDto;
 import com.teamlab.engineering.restfulapi.entitiy.Product;
 import com.teamlab.engineering.restfulapi.form.ProductForm;
 import com.teamlab.engineering.restfulapi.service.ProductService;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -31,10 +30,13 @@ import java.util.List;
  * @author asada
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/products")
 public class ProductController {
   private final ProductService productService;
+
+  public ProductController(ProductService productService) {
+    this.productService = productService;
+  }
 
   /**
    * 商品検索

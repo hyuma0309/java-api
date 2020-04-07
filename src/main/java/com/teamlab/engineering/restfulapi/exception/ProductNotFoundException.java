@@ -1,7 +1,7 @@
 package com.teamlab.engineering.restfulapi.exception;
 
 /**
- * 存在しないURLにアクセスした時の例外クラス
+ * 存在しない商品IDが指定された場合に発生する例外クラス
  *
  * @author asada
  */

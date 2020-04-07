@@ -1,6 +1,5 @@
 package com.teamlab.engineering.restfulapi.exception;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -22,7 +21,6 @@ import java.util.Locale;
  *
  * @author asada
  */
-@Slf4j
 @RestControllerAdvice
 public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -32,7 +30,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ProductNotFoundException.class)
   public ResponseEntity<Object> handleProductNotFoundException(
       ProductNotFoundException e, WebRequest request) {
-    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage("error.exception.ProductNotFound", null, Locale.JAPAN),
@@ -45,7 +42,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ProductImageNotDeletedException.class)
   public ResponseEntity<Object> handleProductImageNotDeletedException(
       ProductImageNotDeletedException e, WebRequest request) {
-    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage("error.exception.ImageNotDeleted", null, Locale.JAPAN),
@@ -58,7 +54,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(UnsupportedMediaTypeException.class)
   public ResponseEntity<Object> handleUnsupportedMediaTypeException(
       UnsupportedMediaTypeException e, WebRequest request) {
-    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage("error.exception.UnsupportedMediaType", null, Locale.JAPAN),
@@ -71,7 +66,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(AlreadyExistTitleException.class)
   public ResponseEntity<Object> handleAlreadyExistTitleException(
       AlreadyExistTitleException e, WebRequest request) {
-    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage("error.exception.AlreadyExistTitle", null, Locale.JAPAN),
@@ -83,7 +77,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ProductNotImageException.class)
   public ResponseEntity<Object> handleProductNotImageException(
       ProductNotImageException e, WebRequest request, HttpStatus status) {
-    log.warn(e.getMessage(), e);
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage("error.exception.NotImage", null, Locale.JAPAN),
@@ -99,7 +92,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpHeaders headers,
       HttpStatus status,
       WebRequest request) {
-    log.warn(ex.getMessage(), ex);
     return super.handleExceptionInternal(
         ex,
         messageSource.getMessage("error.exception.MethodArgumentNotValid", null, Locale.JAPAN),
@@ -112,7 +104,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleTypeMismatch(
       TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    log.warn(ex.getMessage(), ex);
     return super.handleExceptionInternal(
         ex,
         messageSource.getMessage("error.exception.TypeMismatch", null, Locale.JAPAN),
@@ -125,7 +116,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleNoHandlerFoundException(
       NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    log.warn(ex.getMessage(), ex);
     return super.handleExceptionInternal(
         ex,
         messageSource.getMessage("error.exception.NoHandlerFound", null, Locale.JAPAN),
@@ -137,7 +127,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   /** どこにもキャッチされなかったら呼ばれる */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
-    log.warn(ex.getMessage(), ex);
     return super.handleExceptionInternal(
         ex,
         messageSource.getMessage("error.exception.handleAll", null, Locale.JAPAN),
@@ -153,7 +142,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpHeaders headers,
       HttpStatus status,
       WebRequest request) {
-    log.warn(ex.getMessage(), ex);
     return super.handleExceptionInternal(
         ex,
         messageSource.getMessage(

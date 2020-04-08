@@ -1,13 +1,11 @@
 package com.teamlab.engineering.restfulapi.service;
 
-import com.teamlab.engineering.restfulapi.exception.ProductImageNotDeletedException;
 import com.teamlab.engineering.restfulapi.exception.UnsupportedMediaTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +20,6 @@ import java.util.UUID;
  * @author asada
  */
 @Service
-@Transactional
 class ImageService {
 
   // UploadDirプラグインはファイルのアップロード時に、ファイルの拡張子によってアップロード先のディレクトリを自動的に切り替えるプラグイン
@@ -33,7 +30,7 @@ class ImageService {
    * 画像ファイルのアップロード
    *
    * @param multipartFile 画像ファイル
-   * @return 商品画像
+   * @return
    */
   String uploadFile(MultipartFile multipartFile) {
     // アップロードファイルのファイル名。
@@ -48,6 +45,20 @@ class ImageService {
         && !".png".equalsIgnoreCase(extension)) {
       throw new UnsupportedMediaTypeException("未対応の拡張子です");
     }
+    // 偽装チェック
+    mineType(multipartFile);
+    String random = UUID.randomUUID().toString();
+    String imagePath = random + extension;
+    File file = new File(uploadDir + imagePath);
+    try {
+      multipartFile.transferTo(file.toPath());
+      return imagePath;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  void mineType(MultipartFile multipartFile) {
     try {
       // リクエストの本文の MIME タイプを返します
       String mimeType = multipartFile.getContentType();
@@ -62,15 +73,6 @@ class ImageService {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    String random = UUID.randomUUID().toString();
-    String imagePath = random + extension;
-    File file = new File(uploadDir + imagePath);
-    try {
-      multipartFile.transferTo(file.toPath());
-      return imagePath;
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   /**
@@ -80,8 +82,6 @@ class ImageService {
    */
   void deleteFile(String imagePath) {
     File file = new File(uploadDir + imagePath);
-    if (!file.delete()) {
-      throw new ProductImageNotDeletedException("商品画像の削除に失敗しました: " + uploadDir + imagePath);
-    }
+    file.delete();
   }
 }

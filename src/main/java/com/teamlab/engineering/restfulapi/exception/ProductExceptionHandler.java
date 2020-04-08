@@ -1,7 +1,6 @@
 package com.teamlab.engineering.restfulapi.exception;
 
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,11 @@ import java.util.Locale;
 @RestControllerAdvice
 public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @Autowired protected MessageSource messageSource;
+  private final MessageSource messageSource;
+
+  public ProductExceptionHandler(MessageSource messageSource) {
+    this.messageSource = messageSource;
+  }
 
   /** ID等のリソースが無い場合に呼び出し */
   @ExceptionHandler(ProductNotFoundException.class)

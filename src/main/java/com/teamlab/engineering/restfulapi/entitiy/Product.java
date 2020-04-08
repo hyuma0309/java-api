@@ -51,11 +51,11 @@ public class Product {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime updateTime;
 
-  public Long getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -68,7 +68,7 @@ public class Product {
   }
 
   public String getDescription() {
-    return title;
+    return description;
   }
 
   public void setDescription(String description) {

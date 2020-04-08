@@ -16,7 +16,7 @@ spring:
   jpa:
     database: MYSQL
     hibernate:
-    ddl-auto: none
+      ddl-auto: none
 
   servlet:
     multipart:

@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
  * @author asada
  */
 @Service
-@Transactional
 public class ProductService {
 
   private final ProductRepository productRepository;
@@ -59,17 +57,25 @@ public class ProductService {
   public Product findProduct(Long id) {
     return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
   }
-
+  /**
+   * 商品IDで商品を取得する
+   *
+   * @param id 商品ID
+   * @return 取得した商品情報DTO
+   */
+  public ProductDto getProduct(Long id) {
+    return convertToDto(findProduct(id));
+  }
   /**
    * 商品情報登録
    *
+   * @param api
    * @param title 商品タイトル
    * @param description 商品説明分
    * @param price 商品価格
-   * @param api
    * @return 登録した商品情報
    */
-  public Product create(String title, String description, Integer price) {
+  public ProductDto create(String title, String description, Integer price) {
     if (isSameTitleExist(title)) {
       throw new AlreadyExistTitleException("既にその" + title + "は存在しています");
     }
@@ -77,7 +83,7 @@ public class ProductService {
     product.setTitle(title);
     product.setDescription(description);
     product.setPrice(price);
-    return productRepository.save(product);
+    return convertToDto(productRepository.save(product));
   }
 
   /**
@@ -89,7 +95,7 @@ public class ProductService {
    * @param price 商品価格
    * @return 更新した商品情報
    */
-  public Product update(long id, String title, String description, Integer price) {
+  public ProductDto update(long id, String title, String description, Integer price) {
     if (isSameTitleExistNotId(title, id)) {
       throw new AlreadyExistTitleException("既にその" + title + "は存在しています");
     }
@@ -97,7 +103,7 @@ public class ProductService {
     product.setTitle(title);
     product.setDescription(description);
     product.setPrice(price);
-    return productRepository.save(product);
+    return convertToDto(productRepository.save(product));
   }
 
   /**
@@ -125,7 +131,11 @@ public class ProductService {
    * @param id 商品ID
    */
   public void delete(Long id) {
-    productRepository.delete(findProduct(id));
+    Product product = findProduct(id);
+    if (Objects.nonNull(product.getImagePath())) {
+      imageService.deleteFile(product.getImagePath());
+    }
+    productRepository.delete(product);
   }
 
   /**
@@ -135,7 +145,7 @@ public class ProductService {
    * @param file 商品画像
    * @return 画像を更新した商品情報
    */
-  public Product uploadImage(Long id, MultipartFile file) {
+  public ProductDto uploadImage(Long id, MultipartFile file) {
     Product product = findProduct(id);
     //      Objects.nonNull＝指定された参照がnull以外の場合はtrueを返す。それ以外の場合はfalseを返す。
     //      既に画像が登録されてる場合、上書きするために削除
@@ -143,21 +153,7 @@ public class ProductService {
       imageService.deleteFile(product.getImagePath());
     }
     product.setImagePath(imageService.uploadFile(file));
-    return productRepository.save(product);
-  }
-
-  /**
-   * 商品削除
-   *
-   * @param id 商品ID
-   * @return 画像を削除した商品情報
-   */
-  public Product deleteImage(Long id) {
-    Product product = findProduct(id);
-    imageService.deleteFile(product.getImagePath());
-    //  指定されたidの商品のimageをnullにして、画像を削除する.
-    product.setImagePath(null);
-    return productRepository.save(product);
+    return convertToDto(productRepository.save(product));
   }
 
   /**
@@ -179,7 +175,7 @@ public class ProductService {
       b = IOUtils.toByteArray(image);
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.IMAGE_JPEG);
+    headers.setContentType(MediaType.ALL);
     headers.setContentLength(b.length);
     return new HttpEntity<>(b, headers);
   }

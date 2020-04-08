@@ -1,7 +1,6 @@
 package com.teamlab.engineering.restfulapi.controller;
 
 import com.teamlab.engineering.restfulapi.dto.ProductDto;
-import com.teamlab.engineering.restfulapi.entitiy.Product;
 import com.teamlab.engineering.restfulapi.form.ProductForm;
 import com.teamlab.engineering.restfulapi.service.ProductService;
 import org.apache.commons.lang3.StringUtils;
@@ -63,10 +62,8 @@ public class ProductController {
   // HTTPステータスとして、”201 Created”を設定するため、value属性にはHttpStatus.CREATEDを設定する。
   @ResponseStatus(HttpStatus.CREATED)
   public ProductDto create(@RequestBody @Validated ProductForm ProductForm) {
-    Product productEntity =
-        productService.create(
-            ProductForm.getTitle(), ProductForm.getDescription(), ProductForm.getPrice());
-    return productService.convertToDto(productEntity);
+    return productService.create(
+        ProductForm.getTitle(), ProductForm.getDescription(), ProductForm.getPrice());
   }
 
   /**
@@ -78,8 +75,7 @@ public class ProductController {
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public ProductDto show(@PathVariable long id) {
-    Product productEntity = productService.findProduct(id);
-    return productService.convertToDto(productEntity);
+    return productService.getProduct(id);
   }
 
   /**
@@ -92,10 +88,8 @@ public class ProductController {
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public ProductDto update(@PathVariable Long id, @RequestBody @Validated ProductForm ProductForm) {
-    Product productEntity =
-        productService.update(
-            id, ProductForm.getTitle(), ProductForm.getDescription(), ProductForm.getPrice());
-    return productService.convertToDto(productEntity);
+    return productService.update(
+        id, ProductForm.getTitle(), ProductForm.getDescription(), ProductForm.getPrice());
   }
 
   /**
@@ -135,7 +129,6 @@ public class ProductController {
   @ResponseStatus(HttpStatus.OK)
   public ProductDto uploadImage(
       @PathVariable Long id, @RequestParam(name = "productImage") MultipartFile file) {
-    Product productEntity = productService.uploadImage(id, file);
-    return productService.convertToDto(productEntity);
+    return productService.uploadImage(id, file);
   }
 }

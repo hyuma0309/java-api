@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -170,12 +171,15 @@ public class ProductService {
     Resource resource = resourceLoader.getResource("File:" + uploadDir + imagePath);
     byte[] b;
     // ResourceインタフェースはInputStreamSourceインタフェースを継承しているのでgetInputStreamメソッドで、リソースファイルのInputStreamを取得することができます。
+    String mediaType;
     try (InputStream image = resource.getInputStream()) {
+      mediaType = URLConnection.guessContentTypeFromStream(image);
+
       // IOUtils型はInputStreamを読み込み、byte[]を返す静的メソッドを持ちます。
       b = IOUtils.toByteArray(image);
     }
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.ALL);
+    headers.setContentType(MediaType.valueOf(mediaType));
     headers.setContentLength(b.length);
     return new HttpEntity<>(b, headers);
   }

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -82,6 +83,10 @@ class ImageService {
    */
   void deleteFile(String imagePath) {
     File file = new File(uploadDir + imagePath);
-    file.delete();
+    try {
+      Files.deleteIfExists(file.toPath());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

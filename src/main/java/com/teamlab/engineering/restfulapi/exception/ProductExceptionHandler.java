@@ -145,8 +145,7 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   /** どこにもキャッチされなかったら呼ばれる */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handleAllException(Exception e, WebRequest request) {
-    logger.warn(e.getMessage(), e);
-
+    logger.error(e.getMessage(), e);
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage("error.exception.handleAll", null, Locale.JAPAN),
@@ -163,7 +162,6 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpStatus status,
       WebRequest request) {
     logger.warn(e.getMessage(), e);
-
     return super.handleExceptionInternal(
         e,
         messageSource.getMessage(

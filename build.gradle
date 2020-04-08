@@ -38,7 +38,4 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-thymeleaf"
 
 
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
-
-
 }

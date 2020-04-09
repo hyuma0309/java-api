@@ -40,14 +40,9 @@ class ImageService {
     //  lastIndexOf()は指定された要素をリスト内でindexから後向きに検索して最後に検出された位置のインデックスを返すメソッド
     String extension = multipartFileName.substring(multipartFileName.lastIndexOf("."));
     // 拡張子チェック
-    if (!".jpeg".equalsIgnoreCase(extension)
-        && !".jpg".equalsIgnoreCase(extension)
-        && !".gif".equalsIgnoreCase(extension)
-        && !".png".equalsIgnoreCase(extension)) {
-      throw new UnsupportedMediaTypeException("未対応の拡張子です");
-    }
+    validateExtension(multipartFile);
     // 偽装チェック
-    mineType(multipartFile);
+    validateMineType(multipartFile);
     String random = UUID.randomUUID().toString();
     String imagePath = random + extension;
     File file = new File(uploadDir + imagePath);
@@ -59,7 +54,18 @@ class ImageService {
     }
   }
 
-  void mineType(MultipartFile multipartFile) {
+  void validateExtension(MultipartFile multipartFile) {
+    String multipartFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+    String extension = multipartFileName.substring(multipartFileName.lastIndexOf("."));
+    if (!".jpeg".equalsIgnoreCase(extension)
+        && !".jpg".equalsIgnoreCase(extension)
+        && !".gif".equalsIgnoreCase(extension)
+        && !".png".equalsIgnoreCase(extension)) {
+      throw new UnsupportedMediaTypeException("未対応の拡張子です");
+    }
+  }
+
+  void validateMineType(MultipartFile multipartFile) {
     try {
       // リクエストの本文の MIME タイプを返します
       String mimeType = multipartFile.getContentType();

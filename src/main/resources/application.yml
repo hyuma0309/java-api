@@ -37,5 +37,9 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
+  github:
+    clientId: ${GITHUB_CLIENT_ID}
+    clientSecret: ${GITHUB_CLIENT_SECRET}
+    callbackUrl: http://localhost:8080/github/callback
 
 

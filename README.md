@@ -125,23 +125,31 @@ git clone git@bitbucket.org:teamlabengineering/asada-restapi.git
 
  **Github認証設定**
  
- *GithubでOAuth用アプリケーションの作成 `https://github.com/settings/developers`
+ * GithubでOAuth用アプリケーションの作成 `https://github.com/settings/developers`
  
- *各項目を登録 App name : asada-restful-api
+ * 各項目を登録 App name : asada-restful-api
  
- *HomePage URL : http://localhost:8080
+ * HomePage URL : http://localhost:8080
  
- *Authorization callback URL : http://localhost:8080/github/callback
+ * Authorization callback URL : http://localhost:8080/github/callback
  
- *Client ID・Client Secretを控える
+ * Client ID・Client Secretを控える
  
  **アプリ起動**
  
  * .bash_profileに環境変数としてClient ID・Client Secretを記述し起動
  `$ open ~/.bash_profile`
  * .bash_profileに以下を追加し、上書き保存
-  `export GITHUB_CLIENTID=Client ID
-   export GITHUB_CLIENTSECRET=Client Secret`
-  `$ $source ~/.bash_profile`
-  
- *`$ gradle bootRun`
+  ```
+export GITHUB_CLIENTID=Client ID
+```
+
+```
+export GITHUB_CLIENTSECRET=Client Secret
+```
+
+```
+$ $source ~/.bash_profile
+```
+
+ * `$ gradle bootRun`

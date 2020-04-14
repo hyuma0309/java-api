@@ -140,7 +140,8 @@ git clone git@bitbucket.org:teamlabengineering/asada-restapi.git
  * .bash_profileに環境変数としてClient ID・Client Secretを記述し起動
  `$ open ~/.bash_profile`
  * .bash_profileに以下を追加し、上書き保存
-  ```
+ 
+```
 export GITHUB_CLIENTID=Client ID
 ```
 

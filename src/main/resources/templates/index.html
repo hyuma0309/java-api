@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>トップ</title>
 </head>
 <body>
-
+<div layout:fragment="content">
+    <a class="btn btn-danger btn-lg btn-block" th:href="@{'/github/login'}">ログイン</a>
+</div>
 </body>
 </html>

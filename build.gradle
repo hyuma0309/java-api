@@ -19,7 +19,7 @@ configurations {
 repositories {
     mavenCentral()
     maven {
-        url "http://repo.spring.io/plugins-release/"
+        url 'https://repo.spring.io/libs-snapshot'
     }
 }
 
@@ -31,13 +31,16 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    compile group: 'org.springframework.social', name: 'spring-social-github', version: '1.0.0.M4'
-
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation "commons-io:commons-io:2.6"
     implementation 'org.apache.commons:commons-lang3:3.9'
 
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.4.1'
 
+
+    implementation 'org.springframework.social:spring-social-github:1.0.0.BUILD-SNAPSHOT'
+    implementation("org.springframework.social:spring-social-security:1.1.0.RELEASE")
+    implementation group: 'org.springframework.social', name: 'spring-social-github', version: '1.0.0.M4'
 
 }

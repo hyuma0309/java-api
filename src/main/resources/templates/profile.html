@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" layout:decorate="~{layout}"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>プロフィール</title>
 </head>
 <body>
-
+<h1>プロフィールページ</h1>
+<div layout:fragment="content">
+    <img height="100px" th:src="'https://avatars2.githubusercontent.com/u/'+${githubUserProfile.id}">
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <td th:text="${githubUserProfile.getId()}"></td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td th:text="${githubUserProfile.getName()}"></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td th:text="${githubUserProfile.getEmail()}"></td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td th:text="${githubUserProfile.getLocation()}"></td>
+        </tr>
+        <tr>
+            <th>Company</th>
+            <td th:text="${githubUserProfile.getCompany()}"></td>
+        </tr>
+        <tr>
+            <th>Blog</th>
+            <td th:text="${githubUserProfile.getBlog()}"></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

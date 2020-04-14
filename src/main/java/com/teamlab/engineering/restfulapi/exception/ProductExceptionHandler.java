@@ -1,5 +1,6 @@
 package com.teamlab.engineering.restfulapi.exception;
 
+import com.teamlab.engineering.restfulapi.controller.ProductController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -22,7 +23,7 @@ import java.util.Locale;
  *
  * @author asada
  */
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = ProductController.class)
 public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
 
   private final MessageSource messageSource;

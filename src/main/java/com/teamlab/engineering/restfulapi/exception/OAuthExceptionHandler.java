@@ -39,7 +39,7 @@ public class OAuthExceptionHandler {
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public String handleInternalServer(Exception ex) {
-    logger.warn(ex.getMessage(), ex);
+    logger.error(ex.getMessage(), ex);
     return "error/500";
   }
 }

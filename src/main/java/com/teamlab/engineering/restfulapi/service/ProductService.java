@@ -187,11 +187,11 @@ public class ProductService {
   /**
    * 同一タイトルの商品が存在するかを検証
    *
-   * @param title 商品タイトル
    * @param api
+   * @param title 商品タイトル
    * @return 検証結果
    */
-  private boolean isSameTitleExist(String title) {
+  public boolean isSameTitleExist(String title) {
     Product product = productRepository.findByTitleEquals(title);
     return product != null;
   }
@@ -199,9 +199,9 @@ public class ProductService {
   /**
    * IDが異なる同一タイトルの商品が存在するかを検証
    *
+   * @param api
    * @param title 商品タイトル
    * @param id 商品 id
-   * @param api
    * @return 検証結果
    */
   private boolean isSameTitleExistNotId(String title, long id) {

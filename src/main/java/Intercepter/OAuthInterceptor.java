@@ -21,7 +21,8 @@ public class OAuthInterceptor extends HandlerInterceptorAdapter {
       Object handler) {
 
     HttpSession httpSession = httpServletRequest.getSession(false);
-    if (httpSession == null) {
+    String session_id = httpSession.getId();
+    if (httpSession == null & session_id == null) {
       throw new UnAuthorizedException("ログイン認証できていません。");
     }
     return true;

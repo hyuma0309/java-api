@@ -64,8 +64,7 @@ public class OAuthService {
   /**
    * 取得したプロフィール情報をDtoに保存
    *
-   * @param gitHubUserProfile ユーザのプロフィール情報
-   * @return githubUserDto
+   * @param gitHubUserProfile ユーザのプロフィール情報 プロフィール情報が格納された{@link GithubDto}を参照
    */
   private GithubDto convertToGitHubUserDto(GitHubUserProfile gitHubUserProfile) {
     return new GithubDto(gitHubUserProfile);

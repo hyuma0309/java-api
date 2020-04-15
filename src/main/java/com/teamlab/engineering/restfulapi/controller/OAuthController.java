@@ -53,6 +53,9 @@ public class OAuthController {
    */
   @GetMapping("/github/callback")
   public String callback(String code) {
+    if (code == null || code.isEmpty()) {
+      return "error/404";
+    }
     String token = oAuthService.getGithubAccessToken(code);
     // サーバ側にデータを保存
     httpSession.setAttribute("token", token);
@@ -71,7 +74,6 @@ public class OAuthController {
     GithubDto githubUserProfile =
         oAuthService.getGithubUserProfile(httpSession.getAttribute("token").toString());
     model.addAttribute("githubUserProfile", githubUserProfile);
-    model.addAttribute("isLogin", httpSession.getAttribute("isLogin"));
     return "profile";
   }
 

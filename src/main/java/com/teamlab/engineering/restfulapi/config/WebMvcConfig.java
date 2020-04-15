@@ -1,6 +1,6 @@
 package com.teamlab.engineering.restfulapi.config;
 
-import Intercepter.OAuthInterceptor;
+import com.teamlab.engineering.restfulapi.interceptor.OAuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

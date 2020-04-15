@@ -1,4 +1,4 @@
-package Intercepter;
+package com.teamlab.engineering.restfulapi.interceptor;
 
 import com.teamlab.engineering.restfulapi.exception.UnAuthorizedException;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

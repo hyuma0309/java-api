@@ -73,7 +73,6 @@ public class OAuthController {
   public String profile(Model model) {
     GithubDto githubUserProfile =
         oAuthService.getGithubUserProfile(httpSession.getAttribute("token").toString());
-    httpSession.setAttribute("githubUserProfile", githubUserProfile);
     model.addAttribute("githubUserProfile", githubUserProfile);
     return "profile";
   }

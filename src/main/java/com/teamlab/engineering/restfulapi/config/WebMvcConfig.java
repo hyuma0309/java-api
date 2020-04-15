@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * OAuthInterceptor用のConfigクラス
  *
@@ -16,11 +14,9 @@ import javax.servlet.http.HttpSession;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-  private HttpSession httpSession;
-
   @Bean
   public OAuthInterceptor oauthInterceptor() {
-    return new OAuthInterceptor(httpSession);
+    return new OAuthInterceptor();
   }
 
   @Override

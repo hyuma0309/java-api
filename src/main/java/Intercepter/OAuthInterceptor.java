@@ -14,20 +14,14 @@ import javax.servlet.http.HttpSession;
  */
 public class OAuthInterceptor extends HandlerInterceptorAdapter {
 
-  private final HttpSession httpSession;
-
-  public OAuthInterceptor(HttpSession httpSession) {
-    this.httpSession = httpSession;
-  }
-
   @Override
   public boolean preHandle(
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse,
       Object handler) {
 
-    HttpSession Session = httpServletRequest.getSession(false);
-    if (Session == null & httpSession.getAttribute("token") != null) {
+    HttpSession httpSession = httpServletRequest.getSession(false);
+    if (httpSession == null || httpSession.getAttribute("token") == null) {
       throw new UnAuthorizedException("ログイン認証できていません。");
     }
     return true;

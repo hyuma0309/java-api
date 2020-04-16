@@ -192,8 +192,7 @@ public class ProductService {
    * @return 検証結果
    */
   public boolean isSameTitleExist(String title) {
-    Product product = productRepository.findByTitleEquals(title);
-    return product != null;
+    return productRepository.findByTitleEquals(title).isPresent();
   }
 
   /**

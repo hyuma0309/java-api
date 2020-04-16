@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class OAuthController {
-  private static final String TOKEN = "token";
+  public static final String TOKEN = "token";
 
   private final OAuthService oAuthService;
   private final HttpSession httpSession;
@@ -58,7 +58,7 @@ public class OAuthController {
     }
     String token = oAuthService.getGithubAccessToken(code);
     // サーバ側にデータを保存
-    httpSession.setAttribute("token", token);
+    httpSession.setAttribute("TOKEN", token);
     httpSession.setAttribute("isLogin", true);
     return "redirect:/github";
   }
@@ -72,7 +72,7 @@ public class OAuthController {
   @GetMapping("/github")
   public String profile(Model model) {
     GithubDto githubUserProfile =
-        oAuthService.getGithubUserProfile(httpSession.getAttribute("token").toString());
+        oAuthService.getGithubUserProfile(httpSession.getAttribute("TOKEN").toString());
     model.addAttribute("githubUserProfile", githubUserProfile);
     return "profile";
   }

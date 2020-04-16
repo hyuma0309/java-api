@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 商品リポジトリ
@@ -27,7 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    * @param title 商品タイトル
    * @return 一件の商品情報
    */
-  Product findByTitleEquals(String title);
+  Optional<Product> findByTitleEquals(String title);
 
   /**
    * IDが異なる同一タイトルの商品を取得

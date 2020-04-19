@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
- * APIアクセストークンのEntityクラス
+ * アクセストークンのEntityクラス
  *
  * @author asada
  */
@@ -37,12 +37,12 @@ public class AccessToken {
     this.id = id;
   }
 
-  public String getApiAccessToken() {
+  public String getAccessToken() {
     return accessToken;
   }
 
-  public void setApiAccessToken(String apiAccessToken) {
-      accessToken = apiAccessToken;
+  public void setAccessToken(String apiAccessToken) {
+    accessToken = apiAccessToken;
   }
 
   public LocalDateTime getCreateTime() {

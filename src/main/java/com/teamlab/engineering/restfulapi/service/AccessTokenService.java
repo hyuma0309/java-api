@@ -1,8 +1,8 @@
 package com.teamlab.engineering.restfulapi.service;
 
-import com.teamlab.engineering.restfulapi.config.AccessTokenConfig;
 import com.teamlab.engineering.restfulapi.entitiy.AccessToken;
 import com.teamlab.engineering.restfulapi.repository.AccessTokenRepository;
+import com.teamlab.engineering.restfulapi.setting.AccessTokenSetting;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,14 +10,19 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
 
+/**
+ * アクセストークンService
+ *
+ * @author asada
+ */
 @Transactional
 @Service
 public class AccessTokenService {
   private final AccessTokenRepository accessTokenRepository;
-  private final AccessTokenConfig accessTokenConfig;
+  private final AccessTokenSetting accessTokenConfig;
 
   public AccessTokenService(
-      AccessTokenRepository accessTokenRepository, AccessTokenConfig accessTokenConfig) {
+      AccessTokenRepository accessTokenRepository, AccessTokenSetting accessTokenConfig) {
     this.accessTokenRepository = accessTokenRepository;
     this.accessTokenConfig = accessTokenConfig;
   }
@@ -64,7 +69,7 @@ public class AccessTokenService {
    * アクセストークンの有効期限を確認
    *
    * @param accessToken アクセストークン
-   * @return有効期限内:true, 有効期限切れ:false
+   * @return 有効期限内:true, 有効期限切れ:false
    */
   public boolean isAccessTokenDeadlineEnabled(AccessToken accessToken) {
     return accessToken

@@ -1,11 +1,16 @@
-package com.teamlab.engineering.restfulapi.config;
+package com.teamlab.engineering.restfulapi.setting;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * AccessTokenの設定
+ *
+ * @author asada
+ */
 @Component
 @ConfigurationProperties(prefix = "config.access-token")
-public class AccessTokenConfig {
+public class AccessTokenSetting {
 
   private long usableMinutes;
 

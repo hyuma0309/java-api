@@ -141,6 +141,7 @@ git clone git@bitbucket.org:teamlabengineering/asada-restapi.git
 ```
 
 **アクセストークン認証**
+
  * トップ画面のログインボタンからログイン
  
  * ログイン後のプロフィール画面から[アクセストークン]をコピー

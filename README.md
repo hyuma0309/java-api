@@ -33,17 +33,21 @@
     │   ├── java
     │   │   └── com.teamlab.engineering.restfulapi
     │   │           ├── config
+    │   │           │   └── FilterConfiguration
     │   │           │   └── MessageSourceConfiguration
     │   │           │   └── WebMvcConfig
     │   │           ├── controller
+    │   │           │   └── OAuthController.java
     │   │           │   └── ProductController.java
     │   │           ├── dto
     │   │           │   └── GithubDto.java
     │   │           │   └── ProductDto.java
     │   │           ├── entity
+    │   │           │   └── AccessToken.java
     │   │           │   └── Product.java
     │   │           ├── exception
     │   │           │   ├── AlreadyExistTitleException.java
+    │   │           │   ├── ErrorResponse.java
     │   │           │   ├── OAuthExceptionHandler.java
     │   │           │   ├── ProductExceptionHandler.java
     │   │           │   ├── UnAuthorizedException.java
@@ -51,11 +55,17 @@
     │   │           │   ├── ProductNotFoundException.java
     │   │           │   └── ProductNotImageException.java
     │   │           │   └── UnsupportedMediaTypeException.java
+    │   │           ├── filter
+    │   │           │   └── AccessTokenFilter.java
     │   │           ├── form
     │   │           │   └── ProductForm.java
+    │   │           ├── setting
+    │   │           │   └── AccessTokenSetting.java
     │   │           ├── repository
+    │   │           │   └── AccessTokenRepository.java
     │   │           │   └── ProductRepository.java
     │   │           └── service
+    │   │               └── AccessTokenService.java
     │   │               └── ImageService.java
     │   │               └── OAuthService.java
     │   │               └── ProductService.java
@@ -103,6 +113,14 @@ table:product
 | create_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    |                |
 | update_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    | on update CURRENT_TIMESTAMP                 |
 
+table:access_tokens
+
+| Field | Type | Null | Key | Defalt | Extra |
+|:-----------|:------------|:------------|:------------|:------------|:------------|
+| id         |  bigint(20) unsigned  | NO   | PRI | NULL    | auto_increment |
+| access_token       | varchar(100)          | NO  | UNI    | NULL    |                |
+| create_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    |                |
+| update_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    | on update CURRENT_TIMESTAMP   
 
 
 
@@ -122,8 +140,19 @@ mysql> CREATE DATABASE restful_api;
 git clone git@bitbucket.org:teamlabengineering/asada-restapi.git
 ```
 
+**アクセストークン認証**
 
- **Github認証設定**
+ * トップ画面のログインボタンからログイン
+ 
+ * ログイン後のプロフィール画面から[アクセストークン]をコピー
+ 
+ * リクエストの際Headerに以下の設定を加える
+   + KEYに「Authorization」
+   + VALUEに「Bearer [アクセストークン]」
+
+ 
+
+**Github認証設定**
  
  * GithubでOAuth用アプリケーションの作成 `https://github.com/settings/developers`
  

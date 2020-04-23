@@ -38,12 +38,11 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleProductNotFoundException(
       ProductNotFoundException e, WebRequest request) {
     logger.warn(e.getMessage(), e);
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.ProductNotFound", null, Locale.JAPAN),
-        null,
-        HttpStatus.NOT_FOUND,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.ProductNotFound", null, Locale.JAPAN));
+    return super.handleExceptionInternal(e, errorResponse, null, HttpStatus.NOT_FOUND, request);
   }
 
   /** 画像の削除に失敗した時の呼び出し */
@@ -51,12 +50,11 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleProductImageNotDeletedException(
       ProductImageNotDeletedException e, WebRequest request) {
     logger.warn(e.getMessage(), e);
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.ImageNotDeleted", null, Locale.JAPAN),
-        null,
-        HttpStatus.BAD_REQUEST,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.ImageNotDeleted", null, Locale.JAPAN));
+    return super.handleExceptionInternal(e, errorResponse, null, HttpStatus.BAD_REQUEST, request);
   }
 
   /** 未設定の拡張子を使用した場合の呼び出し */
@@ -64,12 +62,13 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleUnsupportedMediaTypeException(
       UnsupportedMediaTypeException e, WebRequest request) {
     logger.warn(e.getMessage(), e);
+
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.UnsupportedMediaType", null, Locale.JAPAN));
     return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.UnsupportedMediaType", null, Locale.JAPAN),
-        null,
-        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-        request);
+        e, errorResponse, null, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
   }
 
   /** 存在している商品タイトル登録時呼び出し */
@@ -77,25 +76,25 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleAlreadyExistTitleException(
       AlreadyExistTitleException e, WebRequest request) {
     logger.warn(e.getMessage(), e);
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.AlreadyExistTitle", null, Locale.JAPAN),
-        null,
-        HttpStatus.BAD_REQUEST,
-        request);
+
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.AlreadyExistTitle", null, Locale.JAPAN));
+    return super.handleExceptionInternal(e, errorResponse, null, HttpStatus.BAD_REQUEST, request);
   }
   /** 画像が存在しない場合の呼び出し　 */
   @ExceptionHandler(ProductNotImageException.class)
   public ResponseEntity<Object> handleProductNotImageException(
-      ProductNotImageException e, WebRequest request, HttpStatus status) {
+      ProductNotImageException e, WebRequest request) {
     logger.warn(e.getMessage(), e);
 
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.NotImage", null, Locale.JAPAN),
-        null,
-        status,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.NotImage", null, Locale.JAPAN));
+
+    return super.handleExceptionInternal(e, errorResponse, null, HttpStatus.NOT_FOUND, request);
   }
 
   /** {@inheritDoc} */
@@ -107,12 +106,12 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       WebRequest request) {
     logger.warn(e.getMessage(), e);
 
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.MethodArgumentNotValid", null, Locale.JAPAN),
-        null,
-        status,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.MethodArgumentNotValid", null, Locale.JAPAN));
+
+    return super.handleExceptionInternal(e, errorResponse, null, status, request);
   }
 
   /** {@inheritDoc} */
@@ -121,12 +120,12 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       TypeMismatchException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
     logger.warn(e.getMessage(), e);
 
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.TypeMismatch", null, Locale.JAPAN),
-        null,
-        status,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.TypeMismatch", null, Locale.JAPAN));
+
+    return super.handleExceptionInternal(e, errorResponse, null, status, request);
   }
 
   /** {@inheritDoc} */
@@ -134,24 +133,26 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleNoHandlerFoundException(
       NoHandlerFoundException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
     logger.warn(e.getMessage(), e);
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.NoHandlerFound", null, Locale.JAPAN),
-        null,
-        status,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.NoHandlerFound", null, Locale.JAPAN));
+
+    return super.handleExceptionInternal(e, errorResponse, null, status, request);
   }
 
   /** どこにもキャッチされなかったら呼ばれる */
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Object> handleAllException(Exception e, WebRequest request) {
+  public ResponseEntity<Object> handleAllException(
+      Exception e, HttpHeaders headers, HttpStatus status, WebRequest request) {
     logger.error(e.getMessage(), e);
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage("error.exception.handleAll", null, Locale.JAPAN),
-        null,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        request);
+
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage("error.exception.handleAll", null, Locale.JAPAN));
+
+    return super.handleExceptionInternal(e, errorResponse, null, status, request);
   }
 
   /** {@inheritDoc} */
@@ -162,12 +163,12 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
       HttpStatus status,
       WebRequest request) {
     logger.warn(e.getMessage(), e);
-    return super.handleExceptionInternal(
-        e,
-        messageSource.getMessage(
-            "error.exception.MissingServletRequestParameter", null, Locale.JAPAN),
-        null,
-        status,
-        request);
+    ErrorResponse errorResponse =
+        new ErrorResponse(
+            messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
+            messageSource.getMessage(
+                "error.exception.MissingServletRequestParameter", null, Locale.JAPAN));
+
+    return super.handleExceptionInternal(e, errorResponse, null, status, request);
   }
 }

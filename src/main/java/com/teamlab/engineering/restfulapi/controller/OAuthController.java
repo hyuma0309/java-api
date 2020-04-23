@@ -1,6 +1,7 @@
 package com.teamlab.engineering.restfulapi.controller;
 
 import com.teamlab.engineering.restfulapi.dto.GithubDto;
+import com.teamlab.engineering.restfulapi.service.AccessTokenService;
 import com.teamlab.engineering.restfulapi.service.OAuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,13 @@ public class OAuthController {
   public static final String TOKEN = "token";
 
   private final OAuthService oAuthService;
+  private final AccessTokenService accessTokenService;
   private final HttpSession httpSession;
 
-  public OAuthController(OAuthService oAuthService, HttpSession httpSession) {
+  public OAuthController(
+      OAuthService oAuthService, AccessTokenService accessTokenService, HttpSession httpSession) {
     this.oAuthService = oAuthService;
+    this.accessTokenService = accessTokenService;
     this.httpSession = httpSession;
   }
 
@@ -71,8 +75,11 @@ public class OAuthController {
    */
   @GetMapping("/github")
   public String profile(Model model) {
+    accessTokenService.deleteApiToken();
     GithubDto githubUserProfile =
         oAuthService.getGithubUserProfile(httpSession.getAttribute("TOKEN").toString());
+    String accessToken = accessTokenService.saveAccessToken().getAccessToken();
+    model.addAttribute("accessToken", accessToken);
     model.addAttribute("githubUserProfile", githubUserProfile);
     return "profile";
   }

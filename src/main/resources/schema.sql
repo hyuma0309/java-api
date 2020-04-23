@@ -11,3 +11,15 @@ create table if not exists product
     unique key (title)
 ) engine = innodb
   charset = utf8mb4 comment = '商品テーブル';
+
+  create  table  if not exists access_tokens
+  (
+  id bigint unsigned not null auto_increment comment 'アクセストークンID',
+  access_token varchar(100)    not null  comment 'APIアクセストークン',
+  create_time datetime        not null default current_timestamp comment '作成日時',
+  update_time  datetime    not null default current_timestamp on update current_timestamp comment '更新日時',
+  primary key (id),
+  unique key (access_token)
+) engine = innodb
+  charset = utf8mb4 comment 'アクセストークンテーブル' ;
+

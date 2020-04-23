@@ -19,12 +19,12 @@ import java.util.UUID;
 @Service
 public class AccessTokenService {
   private final AccessTokenRepository accessTokenRepository;
-  private final AccessTokenSetting accessTokenConfig;
+  private final AccessTokenSetting accessTokenSetting;
 
   public AccessTokenService(
       AccessTokenRepository accessTokenRepository, AccessTokenSetting accessTokenConfig) {
     this.accessTokenRepository = accessTokenRepository;
-    this.accessTokenConfig = accessTokenConfig;
+    accessTokenSetting = accessTokenConfig;
   }
 
   /**
@@ -51,7 +51,7 @@ public class AccessTokenService {
   /** 有効期限切れのアクセストークン削除 */
   public void deleteApiToken() {
     LocalDateTime limitTime =
-        LocalDateTime.now().minusMinutes(accessTokenConfig.getUsableMinutes());
+        LocalDateTime.now().minusMinutes(accessTokenSetting.getUsableMinutes());
     accessTokenRepository.deleteAccessTokenByUpdateTimeLessThan(limitTime);
   }
 
@@ -74,7 +74,7 @@ public class AccessTokenService {
   public boolean isAccessTokenDeadlineEnabled(AccessToken accessToken) {
     return accessToken
         .getUpdateTime()
-        .isBefore(LocalDateTime.now().minusMinutes(accessTokenConfig.getUsableMinutes()));
+        .isBefore(LocalDateTime.now().minusMinutes(accessTokenSetting.getUsableMinutes()));
   }
 
   /**

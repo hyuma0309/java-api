@@ -87,7 +87,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
       // アクセストークンの更新日時を現在日時に更新
       accessTokenService.overWriteAccessTokenCurrentTimeUpdate(apiAccessToken);
 
-    } catch (IOException e) {
+    } catch (Exception e) {
       response.sendError(response.SC_INTERNAL_SERVER_ERROR);
     }
 

@@ -86,7 +86,7 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
   /** 画像が存在しない場合の呼び出し　 */
   @ExceptionHandler(ProductNotImageException.class)
   public ResponseEntity<Object> handleProductNotImageException(
-      ProductNotImageException e, WebRequest request, HttpStatus status) {
+      ProductNotImageException e, WebRequest request) {
     logger.warn(e.getMessage(), e);
 
     ErrorResponse errorResponse =
@@ -94,7 +94,7 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
             messageSource.getMessage("error.exception.failed", null, Locale.JAPAN),
             messageSource.getMessage("error.exception.NotImage", null, Locale.JAPAN));
 
-    return super.handleExceptionInternal(e, errorResponse, null, status, request);
+    return super.handleExceptionInternal(e, errorResponse, null, HttpStatus.NOT_FOUND, request);
   }
 
   /** {@inheritDoc} */

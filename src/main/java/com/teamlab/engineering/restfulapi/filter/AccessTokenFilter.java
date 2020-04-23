@@ -66,24 +66,30 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 
     AccessToken apiAccessToken = accessTokenService.getAccessToken(token);
 
-    // アクセストークンがDBに存在しない
-    if (apiAccessToken == null) {
-      setErrorResponse(
-          response, messageSource.getMessage("error.filter.accessToken.null", null, Locale.JAPAN));
-      return;
-    }
-    // アクセストークンの有効期限が切れている
-    if (accessTokenService.isAccessTokenDeadlineEnabled(apiAccessToken)) {
+    try {
 
-      setErrorResponse(
-          response,
-          messageSource.getMessage(
-              "error.filter.accessToken.expiredValidTime", null, Locale.JAPAN));
-      return;
-    }
+      // アクセストークンがDBに存在しない
+      if (apiAccessToken == null) {
+        setErrorResponse(
+            response,
+            messageSource.getMessage("error.filter.accessToken.null", null, Locale.JAPAN));
+        return;
+      }
+      // アクセストークンの有効期限が切れている
+      if (accessTokenService.isAccessTokenDeadlineEnabled(apiAccessToken)) {
+        setErrorResponse(
+            response,
+            messageSource.getMessage(
+                "error.filter.accessToken.expiredValidTime", null, Locale.JAPAN));
+        return;
+      }
 
-    // アクセストークンの更新日時を現在日時に更新
-    accessTokenService.overWriteAccessTokenCurrentTimeUpdate(apiAccessToken);
+      // アクセストークンの更新日時を現在日時に更新
+      accessTokenService.overWriteAccessTokenCurrentTimeUpdate(apiAccessToken);
+
+    } catch (IOException e) {
+      response.sendError(response.SC_INTERNAL_SERVER_ERROR);
+    }
 
     // フィルタとしての処理を終了
     filterChain.doFilter(request, response);

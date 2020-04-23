@@ -22,9 +22,9 @@ public class AccessTokenService {
   private final AccessTokenSetting accessTokenSetting;
 
   public AccessTokenService(
-      AccessTokenRepository accessTokenRepository, AccessTokenSetting accessTokenConfig) {
+      AccessTokenRepository accessTokenRepository, AccessTokenSetting accessTokenSetting) {
     this.accessTokenRepository = accessTokenRepository;
-    accessTokenSetting = accessTokenConfig;
+    this.accessTokenSetting = accessTokenSetting;
   }
 
   /**

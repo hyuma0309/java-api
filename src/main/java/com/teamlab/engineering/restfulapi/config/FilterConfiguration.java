@@ -19,7 +19,7 @@ public class FilterConfiguration {
   }
 
   /**
-   * ApiFilterのbean定義
+   * AccessTokenFilterのbean定義
    *
    * @return FilterRegistrationBean
    */

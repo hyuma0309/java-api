@@ -42,6 +42,9 @@ config:
     usableMinutes: 30
     authorizationHeaderFormat: "Bearer"
 
+settings:
+  log:
+    extension: .tsv
 
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- プロパティの読み込み -->
+    <springproperty name="logExtension" source="settings.log.extension"/>
+
+    <!-- デフォルト設定読み込み -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- ログのファイル出力のカスタム設定 -->
+    <appender name="ACCESS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>%d{yyyy-MM-dd}${logExtension}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="com.teamlab.engineering.restfulapi.filter">
+        <level value="INFO"/>
+        <appender-ref ref="ACCESS_LOG"/>
+    </logger>
+
+
+</configuration>

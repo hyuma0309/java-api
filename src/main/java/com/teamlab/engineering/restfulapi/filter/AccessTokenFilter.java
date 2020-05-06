@@ -86,6 +86,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             messageSource.getMessage("error.filter.accessToken.null", null, Locale.JAPAN));
         return;
       }
+
       // アクセストークンの有効期限が切れている
       if (accessTokenService.isAccessTokenDeadlineEnabled(apiAccessToken)) {
         setErrorResponse(
@@ -108,7 +109,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     stopWatch.stop();
 
     logger.info(
-        "METHOD:{} URI:{} STATUS:{} RESPONSE_TIME:{} DATE:{}",
+        "{}＼{}＼{}＼{}＼{}",
         request.getMethod(),
         request.getRequestURI(),
         response.getStatus(),

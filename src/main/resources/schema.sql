@@ -27,7 +27,7 @@ create table if not exists product
   (
   id bigint unsigned not null auto_increment comment 'アクセストークンID',
   api_name varchar(100)    not null  comment 'API名',
-  http_method varchar(5000)        not null comment 'HTTPメソッド',
+  http_method varchar(7)        not null comment 'HTTPメソッド',
   http_status_code char(3)    not null  comment 'HTTPステータスコード',
   access_times    bigint unsigned not null comment 'アクセス回数',
   average_execution_time double    not null comment '平均実行時間',

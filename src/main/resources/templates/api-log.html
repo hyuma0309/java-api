@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja" layout:decorate="~{layout}"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ログ集計検索</title>
+</head>
+<body>
+<h1>ログ集計検索</h1>
+<div layout:fragment="content" class="container">
+    <form th:action="@{/api-log/search}" method="post" th:object="${logForm}">
+        <div class="form-group">
+            <label>ログ集計開始日</label>
+            <input th:field="*{startDate}"
+                   type="date">
+        </div>
+
+
+        <div class="form-group">
+            <label>ログ集計終了日</label>
+            <input th:field="*{endDate}"
+                   type="date">
+            <p th:errors="*{endDate}" class="text-danger"
+               th:if="${#fields.hasErrors('endDate')}"></p>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">検索</button>
+    </form>
+    <table th:if="${aggregateList != null}" class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th th:text="API名"></th>
+            <th th:text="HTTPメソッド"></th>
+            <th th:text="HTTPステータスコード"></th>
+            <th th:text="アクセス回数"></th>
+            <th th:text="平均実行時間"></th>
+        </tr>
+        </thead>
+        <tbody th:each="aggregate : ${aggregateList}">
+        <tr>
+            <td th:text="${aggregate.apiName}"></td>
+            <td th:text="${aggregate.httpMethod}"></td>
+            <td th:text="${aggregate.httpStatusCode}"></td>
+            <td th:text="${aggregate.accessTimes} + '回'"></td>
+            <td th:text="${#numbers.formatDecimal(aggregate.averageExecutionTime,1,'COMMA',2,'POINT')} + 'ms'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

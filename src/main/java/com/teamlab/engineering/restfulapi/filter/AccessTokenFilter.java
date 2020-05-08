@@ -6,7 +6,6 @@ import com.teamlab.engineering.restfulapi.exception.ErrorResponse;
 import com.teamlab.engineering.restfulapi.service.AccessTokenService;
 import com.teamlab.engineering.restfulapi.setting.AccessTokenSetting;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -19,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Locale;
 
 /**
@@ -48,9 +46,6 @@ public class AccessTokenFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-
-    StopWatch stopWatch = new StopWatch();
-    stopWatch.start();
 
     String requestHeaderValue = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -105,16 +100,6 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 
     // フィルタとしての処理を終了
     filterChain.doFilter(request, response);
-
-    stopWatch.stop();
-
-    logger.info(
-        "{}＼{}＼{}＼{}＼{}",
-        request.getMethod(),
-        request.getRequestURI(),
-        response.getStatus(),
-        stopWatch.getTime(),
-        LocalDate.now());
   }
 
   private void setErrorResponse(HttpServletResponse response, String message) throws IOException {

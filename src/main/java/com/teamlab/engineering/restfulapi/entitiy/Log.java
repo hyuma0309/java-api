@@ -36,6 +36,8 @@ public class Log {
       Double averageExecutionTime,
       LocalDate aggregateDate) {}
 
+  public Log() {}
+
   public Long getId() {
     return id;
   }

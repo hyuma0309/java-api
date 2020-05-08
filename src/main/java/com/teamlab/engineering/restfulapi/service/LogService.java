@@ -34,8 +34,8 @@ public class LogService {
   }
 
   /** 1日前のログファイル を集計,保存 */
-  public void yesterday_aggregate_file() {
-    LocalDate yesterday = LocalDate.now().minusDays(0);
+  public void yesterdayAggregateFile() {
+    LocalDate yesterday = LocalDate.now().minusDays(1);
 
     String logFileName = yesterday + logSetting.getExtension();
     File targetLogFile = new File(logFileName);
@@ -48,7 +48,7 @@ public class LogService {
       String logDataLine;
 
       while ((logDataLine = bufferedReader.readLine()) != null) {
-        String[] logDataLineElements = logDataLine.split("＼");
+        String[] logDataLineElements = logDataLine.split("\t");
 
         String httpMethod = logDataLineElements[0];
         String url = logDataLineElements[1];
@@ -119,5 +119,9 @@ public class LogService {
 
   private Log convertToEntity(LogDto logDto) {
     return new Log(logDto);
+  }
+
+  public List<Log> searchAggregate(LocalDate startDate, LocalDate endDate) {
+    return logRepository.findByAggregateDateBetween(startDate, endDate);
   }
 }

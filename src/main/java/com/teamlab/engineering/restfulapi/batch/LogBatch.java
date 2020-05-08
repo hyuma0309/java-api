@@ -18,12 +18,16 @@ public class LogBatch {
   }
 
   /** APIアクセスログ集計 */
-  @Scheduled(initialDelay = 0, fixedDelay = 200000)
+  @Scheduled(cron = "0 0 1 * * *", zone = "Asia/Tokyo")
   public void apiAccessLogBatch() {
-    logger.info("APIアクセスログバッチ処理開始");
+    logger.info("バッチ処理開始");
 
-    logService.yesterday_aggregate_file();
+    try {
+      logService.yesterdayAggregateFile();
+    } catch (Exception e) {
+      logger.error("バッチ処理に失敗しました", e);
+    }
 
-    logger.info("APIアクセスログバッチ処理終了");
+    logger.info("バッチ処理終了");
   }
 }

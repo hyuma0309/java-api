@@ -119,7 +119,7 @@ public class ProductController {
     try {
       return productService.getImage(id, imagePath);
     } catch (IOException e) {
-      throw new ProductNotImageException("画像が存在しません");
+      throw new ProductNotImageException("画像が存在しません", e);
     }
   }
 

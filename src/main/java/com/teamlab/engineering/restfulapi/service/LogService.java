@@ -1,12 +1,12 @@
 package com.teamlab.engineering.restfulapi.service;
 
-import com.teamlab.engineering.restfulapi.constants.ApiName;
 import com.teamlab.engineering.restfulapi.dto.LogDto;
 import com.teamlab.engineering.restfulapi.entitiy.Log;
 import com.teamlab.engineering.restfulapi.repository.LogRepository;
 import com.teamlab.engineering.restfulapi.setting.LogSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class LogService {
 
         ++logDataLineNumber;
 
-        if (logDataLineElements.length >= 4) {
+        if (logDataLineElements.length > 4) {
           String httpMethod = logDataLineElements[0];
           String url = logDataLineElements[1];
           String httpStatusCode = logDataLineElements[2];
@@ -161,7 +162,7 @@ public class LogService {
    * @param httpStatusCode Httpステータスコード
    * @param excutionTime 実行時間
    * @param aggregationDate 集計日
-   * @return
+   * @return　書式が正しい場合 true 正しくない場合 false
    */
   private boolean checkLogPattern(
       long logDataLineNumber,
@@ -211,11 +212,59 @@ public class LogService {
   /**
    * 開始日から終了日の集計日を検索
    *
-   * @param startDate
-   * @param endDate
-   * @return
+   * @param startDate 開始日
+   * @param endDate　終了日
+   * @return 開始日から集計日までの間の集計日
    */
   public List<Log> searchAggregate(LocalDate startDate, LocalDate endDate) {
     return logRepository.findByAggregateDateBetween(startDate, endDate);
+  }
+
+  /** API名の定数設定 */
+  enum ApiName {
+    OTHERS("", ""),
+    商品登録API("^/api/products/?", HttpMethod.POST.name()),
+    商品取得API("^/api/products/[0-9]+$", HttpMethod.GET.name()),
+    商品変更API("^/api/products/[0-9]+$", HttpMethod.PUT.name()),
+    商品削除API("^/api/products/[0-9]+$", HttpMethod.DELETE.name()),
+    商品複数件取得API("^/api/products/?", HttpMethod.GET.name()),
+    商品画像更新API("^/api/products/[0-9]+/images/$", HttpMethod.PATCH.name()),
+    商品画像取得API(
+        "^/api/products/[0-9]+/images/[A-Za-z0-9-]+(\\.jpeg|\\.jpg|\\.png|\\.gif)$",
+        HttpMethod.GET.name());
+
+    private final String requestUrl;
+    private final String httpMethod;
+
+    ApiName(String requestUrl, String httpMethod) {
+      this.requestUrl = requestUrl;
+      this.httpMethod = httpMethod;
+    }
+
+    public String getRequestUrl() {
+      return requestUrl;
+    }
+
+    public String getHttpMethod() {
+      return httpMethod;
+    }
+
+    /**
+     * リクエストURL、HTTPメソッドにマッチするAPI名を返却
+     *
+     * @param requestUrl リクエストURL
+     * @param httpMethod HTTPメソッド
+     * @return マッチした名前
+     */
+    public static ApiName getApiName(String requestUrl, String httpMethod) {
+
+      return Arrays.stream(ApiName.values())
+          .filter(
+              apiName ->
+                  requestUrl.matches(apiName.getRequestUrl())
+                      && apiName.getHttpMethod().equals(httpMethod))
+          .findFirst()
+          .orElse(ApiName.OTHERS);
+    }
   }
 }

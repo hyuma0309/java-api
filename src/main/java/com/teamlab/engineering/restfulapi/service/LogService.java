@@ -19,10 +19,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class LogService {
+
+  private static final Pattern urlPattern = Pattern.compile("^/api/products");
+  private static final Pattern httpMethodPattern = Pattern.compile("GET|POST|PUT|DELETE|PATCH");
+  private static final Pattern httpStatusCodePattern = Pattern.compile("^[0-9]+$");
+  private static final Pattern accessTimesPattern = Pattern.compile("^[0-9]+$");
+  private static final Pattern aggregationDatePattern =
+      Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d");
 
   private final LogRepository logRepository;
   private final LogSetting logSetting;
@@ -35,7 +43,7 @@ public class LogService {
 
   /** 1日前のログファイル を集計,保存 */
   public void yesterdayAggregateFile() {
-    LocalDate yesterday = LocalDate.now().minusDays(1);
+    LocalDate yesterday = LocalDate.now().minusDays(0);
 
     String logFileName = yesterday + logSetting.getExtension();
     File targetLogFile = new File(logFileName);
@@ -46,9 +54,12 @@ public class LogService {
       Map<String, LogDto> logDtoMap = new HashMap<>();
 
       String logDataLine;
+      long logDataLineNumber = 0;
 
       while ((logDataLine = bufferedReader.readLine()) != null) {
         String[] logDataLineElements = logDataLine.split("\t");
+
+        ++logDataLineNumber;
 
         String httpMethod = logDataLineElements[0];
         String url = logDataLineElements[1];
@@ -57,7 +68,18 @@ public class LogService {
         String aggregationDate = logDataLineElements[4];
 
         // API名に変換
+
         String apiName = String.valueOf(ApiName.getApiName(url, httpMethod));
+
+        if (apiName == "null") {
+          logger.warn("API名が存在しません");
+          continue;
+        }
+
+        if (!checkLogPattern(
+            logDataLineNumber, url, httpMethod, httpStatusCode, excutionTime, aggregationDate)) {
+          continue;
+        }
 
         String dtoKey = apiName + httpMethod + httpStatusCode;
 
@@ -109,6 +131,36 @@ public class LogService {
               Double.parseDouble(excutionTime),
               LocalDate.parse(aggregationDate, DateTimeFormatter.ISO_LOCAL_DATE)));
     }
+  }
+
+  private boolean checkLogPattern(
+      long logDataLineNumber,
+      String url,
+      String httpMethod,
+      String httpStatusCode,
+      String excutionTime,
+      String aggregationDate) {
+    if (!urlPattern.matcher(url).find()) {
+      logger.warn("{}行目のURL:{}は不正な書式です。", logDataLineNumber, url);
+      return false;
+    }
+    if (!httpMethodPattern.matcher(httpMethod).find()) {
+      logger.warn("{}行目のHTTPメソッド:{}は不正な書式です。", logDataLineNumber, httpMethod);
+      return false;
+    }
+    if (!httpStatusCodePattern.matcher(httpStatusCode).find()) {
+      logger.warn("{}行目のHTTPステータスコード:{}は不正な書式です。", logDataLineNumber, httpStatusCode);
+      return false;
+    }
+    if (!accessTimesPattern.matcher(excutionTime).find()) {
+      logger.warn("{}行目のAPI実行時間:{}は不正な書式です。", logDataLineNumber, excutionTime);
+      return false;
+    }
+    if (!aggregationDatePattern.matcher(aggregationDate).find()) {
+      logger.warn("{}行目の集計日:{}は不正な書式です。", logDataLineNumber, aggregationDate);
+      return false;
+    }
+    return true;
   }
 
   private void saveAllLogs(List<LogDto> apiAccessLogDtoList) {

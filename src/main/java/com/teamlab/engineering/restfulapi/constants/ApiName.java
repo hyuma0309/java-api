@@ -13,7 +13,7 @@ public enum ApiName {
   商品変更API("^/api/products/[0-9]+$", HttpMethod.PUT.name()),
   商品削除API("^/api/products/[0-9]+$", HttpMethod.DELETE.name()),
   商品複数件取得API("^/api/products/$", HttpMethod.GET.name()),
-  商品画像更新API("^/api/products/[0-9]+/images$", HttpMethod.PATCH.name()),
+  商品画像更新API("^/api/products/[0-9]+/images/$", HttpMethod.PATCH.name()),
   商品画像取得API(
       "^/api/products/[0-9]+/images/[A-Za-z0-9-]+(.jpeg|.jpg|.png|.gif)$", HttpMethod.GET.name());
 

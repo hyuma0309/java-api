@@ -5,6 +5,7 @@ import com.teamlab.engineering.restfulapi.filter.LogFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 
 /**
  * FilterConfigurationクラス
@@ -31,7 +32,7 @@ public class FilterConfiguration {
     FilterRegistrationBean<AccessTokenFilter> bean = new FilterRegistrationBean<>();
     bean.setFilter(accessTokenFilter);
     bean.addUrlPatterns("/api/products/*");
-    bean.setOrder(Integer.MIN_VALUE + 1);
+    bean.setOrder(Ordered.LOWEST_PRECEDENCE);
     return bean;
   }
 
@@ -45,7 +46,7 @@ public class FilterConfiguration {
     FilterRegistrationBean<LogFilter> bean = new FilterRegistrationBean<>();
     bean.setFilter(logFilter);
     bean.addUrlPatterns("/api/products/*");
-    bean.setOrder(Integer.MIN_VALUE);
+    bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
     return bean;
   }
 }

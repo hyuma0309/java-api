@@ -48,7 +48,7 @@ public class LogService {
 
   /** 1日前のログファイル を集計,保存 */
   public void yesterdayAggregateFile() {
-    LocalDate yesterday = LocalDate.now().minusDays(1);
+    LocalDate yesterday = LocalDate.now().minusDays(0);
 
     String logFileName = yesterday + logSetting.getExtension();
     File targetLogFile = new File(logFileName);
@@ -66,30 +66,33 @@ public class LogService {
 
         ++logDataLineNumber;
 
-        String httpMethod = logDataLineElements[0];
-        String url = logDataLineElements[1];
-        String httpStatusCode = logDataLineElements[2];
-        String excutionTime = logDataLineElements[3];
-        String aggregationDate = logDataLineElements[4];
+        if (logDataLineElements.length >= 4) {
+          String httpMethod = logDataLineElements[0];
+          String url = logDataLineElements[1];
+          String httpStatusCode = logDataLineElements[2];
+          String excutionTime = logDataLineElements[3];
+          String aggregationDate = logDataLineElements[4];
 
-        // API名に変換
+          // API名に変換
 
-        String apiName = String.valueOf(ApiName.getApiName(url, httpMethod));
+          String apiName = String.valueOf(ApiName.getApiName(url, httpMethod));
 
-        if (apiName == "null") {
-          logger.warn("API名が存在しません");
-          continue;
+          if (!checkLogPattern(
+              logDataLineNumber, url, httpMethod, httpStatusCode, excutionTime, aggregationDate)) {
+            continue;
+          }
+
+          String dtoKey = apiName + httpMethod + httpStatusCode;
+
+          addMapByLogMapKey(
+              logDtoMap,
+              dtoKey,
+              apiName,
+              httpMethod,
+              aggregationDate,
+              excutionTime,
+              httpStatusCode);
         }
-
-        if (!checkLogPattern(
-            logDataLineNumber, url, httpMethod, httpStatusCode, excutionTime, aggregationDate)) {
-          continue;
-        }
-
-        String dtoKey = apiName + httpMethod + httpStatusCode;
-
-        addMapByLogMapKey(
-            logDtoMap, dtoKey, apiName, httpMethod, aggregationDate, excutionTime, httpStatusCode);
       }
 
       List<LogDto> accessLogDtoList = new ArrayList<>(logDtoMap.values());

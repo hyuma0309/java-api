@@ -28,11 +28,25 @@ public class LogController {
     this.logService = logService;
   }
 
+  /**
+   * ログ検索画面
+   *
+   * @param logForm ログ検索フォーム
+   * @return api-log.html
+   */
   @GetMapping(value = "/api-log")
   public String logGet(@ModelAttribute LogForm logForm) {
     return "api-log";
   }
 
+  /**
+   * ログ検索画面
+   *
+   * @param logForm ログ検索フォーム
+   * @param bindingResult bindingResult
+   * @param model モデル
+   * @return api-log.html
+   */
   @PostMapping(value = "/api-log/search")
   public String serchLog(
       Model model, @Validated @ModelAttribute LogForm logForm, BindingResult bindingResult) {

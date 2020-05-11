@@ -8,14 +8,16 @@ import org.springframework.http.HttpMethod;
  * @author asada
  */
 public enum ApiName {
-  商品登録API("^/api/products/$", HttpMethod.POST.name()),
+  OTHERS("", ""),
+  商品登録API("^/api/products/?", HttpMethod.POST.name()),
   商品取得API("^/api/products/[0-9]+$", HttpMethod.GET.name()),
   商品変更API("^/api/products/[0-9]+$", HttpMethod.PUT.name()),
   商品削除API("^/api/products/[0-9]+$", HttpMethod.DELETE.name()),
-  商品複数件取得API("^/api/products/$", HttpMethod.GET.name()),
+  商品複数件取得API("^/api/products/?", HttpMethod.GET.name()),
   商品画像更新API("^/api/products/[0-9]+/images/$", HttpMethod.PATCH.name()),
   商品画像取得API(
-      "^/api/products/[0-9]+/images/[A-Za-z0-9-]+(.jpeg|.jpg|.png|.gif)$", HttpMethod.GET.name());
+      "^/api/products/[0-9]+/images/[A-Za-z0-9-]+(\\.jpeg|\\.jpg|\\.png|\\.gif)$",
+      HttpMethod.GET.name());
 
   private final String requestUrl;
   private final String httpMethod;
@@ -48,6 +50,6 @@ public enum ApiName {
         return apiName;
       }
     }
-    return null;
+    return ApiName.OTHERS;
   }
 }

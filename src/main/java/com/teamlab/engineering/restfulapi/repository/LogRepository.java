@@ -20,7 +20,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
    *
    * @param startDate
    * @param endDate
-   * @return
+   * @return 開始日から集計日までの間の集計日
    */
   List<Log> findByAggregateDateBetween(LocalDate startDate, LocalDate endDate);
 }

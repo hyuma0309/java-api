@@ -21,7 +21,7 @@ public class LogBatch {
   }
 
   /** APIアクセスログ集計 */
-  @Scheduled(initialDelay = 0, fixedDelay = 200000)
+  @Scheduled(cron = "0 0 1 * * *", zone = "Asia/Tokyo")
   public void apiAccessLogBatch() {
     logger.info("バッチ処理開始");
 

@@ -48,7 +48,7 @@ public class LogService {
 
   /** 1日前のログファイル を集計,保存 */
   public void yesterdayAggregateFile() {
-    LocalDate yesterday = LocalDate.now().minusDays(0);
+    LocalDate yesterday = LocalDate.now().minusDays(1);
 
     String logFileName = yesterday + logSetting.getExtension();
     File targetLogFile = new File(logFileName);

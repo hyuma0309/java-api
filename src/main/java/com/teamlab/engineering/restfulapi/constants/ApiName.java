@@ -2,6 +2,8 @@ package com.teamlab.engineering.restfulapi.constants;
 
 import org.springframework.http.HttpMethod;
 
+import java.util.Arrays;
+
 /**
  * API名の定数設定
  *
@@ -43,13 +45,13 @@ public enum ApiName {
    * @return マッチした場合 API名 マッチしなかった場合 null
    */
   public static ApiName getApiName(String requestUrl, String httpMethod) {
-    ApiName[] apiNames = ApiName.values();
-    for (ApiName apiName : apiNames) {
-      if (requestUrl.matches(apiName.getRequestUrl())
-          && apiName.getHttpMethod().equals(httpMethod)) {
-        return apiName;
-      }
-    }
-    return ApiName.OTHERS;
+
+    return Arrays.stream(ApiName.values())
+        .filter(
+            apiName ->
+                requestUrl.matches(apiName.getRequestUrl())
+                    && apiName.getHttpMethod().equals(httpMethod))
+        .findFirst()
+        .orElse(ApiName.OTHERS);
   }
 }

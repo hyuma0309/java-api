@@ -36,15 +36,20 @@
     │   │           │   └── FilterConfiguration
     │   │           │   └── MessageSourceConfiguration
     │   │           │   └── WebMvcConfig
+    │   │           ├── config
+    │   │           │   └── ApiName
     │   │           ├── controller
+    │   │           │   └── LogController.java
     │   │           │   └── OAuthController.java
     │   │           │   └── ProductController.java
     │   │           ├── dto
+    │   │           │   └── LogDto.java
     │   │           │   └── GithubDto.java
     │   │           │   └── ProductDto.java
     │   │           ├── entity
     │   │           │   └── AccessToken.java
     │   │           │   └── Product.java
+    │   │           │   └── Log.java
     │   │           ├── exception
     │   │           │   ├── AlreadyExistTitleException.java
     │   │           │   ├── ErrorResponse.java
@@ -57,16 +62,20 @@
     │   │           │   └── UnsupportedMediaTypeException.java
     │   │           ├── filter
     │   │           │   └── AccessTokenFilter.java
+    │   │           │   └── LogFilter.java
     │   │           ├── form
     │   │           │   └── ProductForm.java
+    │   │           │   └── LogForm.java
     │   │           ├── setting
     │   │           │   └── AccessTokenSetting.java
     │   │           ├── repository
     │   │           │   └── AccessTokenRepository.java
+    │   │           │   └── LogRepository.java
     │   │           │   └── ProductRepository.java
     │   │           └── service
     │   │               └── AccessTokenService.java
     │   │               └── ImageService.java
+    │   │               └── LogService.java
     │   │               └── OAuthService.java
     │   │               └── ProductService.java
     │   └── resources
@@ -77,12 +86,14 @@
     │      |    |    ├── 401.html
     │      |    |    ├── 404.html
     │      |    |    ├── 500.html
+    │      |    ├── api-log.html
     │      |    ├── header.html
     │      |    ├── index.html
     │      |    ├── layout.html
     │      |    ├── profile.html
     |      |__ application.yml
     |      |__ application-local.yml
+    |      |__ logback-spring.xml
     |      |__ messages.properties
     |      |__ schema.sql
     └── test
@@ -121,6 +132,19 @@ table:access_tokens
 | access_token       | varchar(100)          | NO  | UNI    | NULL    |                |
 | create_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    |                |
 | update_time |  datetime            | NO  |     | CURRENT_TIMESTAMP    | on update CURRENT_TIMESTAMP   
+
+table:logs
+
+| Field                  | Type                | Null | Key | Default | Extra          |
+|:-----------|:------------|:------------|:------------|:------------|:------------|
+| id                     | bigint(20) unsigned | NO   | PRI | NULL    | auto_increment |
+| api_name               | varchar(100)        | NO   |     | NULL    |                |
+| http_method            | varchar(7)          | YES  |     | NULL    |                |
+| http_status_code       | char(3)             | NO   |     | NULL    |                |
+| access_times           | bigint(20) unsigned | NO   |     | NULL    |                |
+| average_execution_time | double              | NO   |     | NULL    |                |
+| aggregate_date         | date                | NO   |     | NULL    |                |
+
 
 
 
@@ -164,7 +188,23 @@ git clone git@bitbucket.org:teamlabengineering/asada-restapi.git
  
  * Client ID・Client Secretを控える
  
- **アプリ起動**
+ 
+**ログ出力項目**
+ 
+ * URL
+ 
+ * HTTPメソッド
+ 
+ * HTTPステータスコード
+ 
+ * 実行にかかった時間
+ 
+ * 集計日
+ 
+1日1回午前1時にバッチ処理が実行され、昨日のログデータをDBに保存します。
+ 
+ 
+**アプリ起動**
  
  * .bash_profileに環境変数としてClient ID・Client Secretを記述し起動
  `$ open ~/.bash_profile`

@@ -2,6 +2,11 @@ package com.teamlab.engineering.restfulapi.dto;
 
 import java.time.LocalDate;
 
+/**
+ * ログDTO
+ *
+ * @author asada
+ */
 public class LogDto {
   private Long id;
 

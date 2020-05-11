@@ -7,6 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+/**
+ * バッチ処理実行
+ *
+ * @author asada
+ */
 @Component
 @Slf4j
 public class LogBatch {
@@ -18,7 +23,7 @@ public class LogBatch {
   }
 
   /** APIアクセスログ集計 */
-  @Scheduled(initialDelay = 0, fixedDelay = 200000)
+  @Scheduled(cron = "0 0 1 * * *", zone = "Asia/Tokyo")
   public void apiAccessLogBatch() {
     logger.info("バッチ処理開始");
 

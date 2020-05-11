@@ -7,8 +7,20 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * ログリポジトリ
+ *
+ * @author asada
+ */
 @Repository
 public interface LogRepository extends JpaRepository<Log, Long> {
 
+  /**
+   * ログのデータを、開始日・終了日で絞り込む
+   *
+   * @param startDate
+   * @param endDate
+   * @return
+   */
   List<Log> findByAggregateDateBetween(LocalDate startDate, LocalDate endDate);
 }

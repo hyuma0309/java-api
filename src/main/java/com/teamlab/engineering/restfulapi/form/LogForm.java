@@ -5,6 +5,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+/**
+ * ログフォーム
+ *
+ * @author asada
+ */
 public class LogForm {
   @NotNull(message = "日付を入力してください")
   @DateTimeFormat(pattern = "yyyy-MM-dd")

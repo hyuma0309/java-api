@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
+/**
+ * Logコントローラー
+ *
+ * @author asada
+ */
 @Controller
 @Slf4j
 public class LogController {

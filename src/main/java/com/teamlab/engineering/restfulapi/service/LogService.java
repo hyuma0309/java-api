@@ -22,6 +22,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * ログサービス
+ *
+ * @author asada
+ */
 @Service
 public class LogService {
 
@@ -43,7 +48,7 @@ public class LogService {
 
   /** 1日前のログファイル を集計,保存 */
   public void yesterdayAggregateFile() {
-    LocalDate yesterday = LocalDate.now().minusDays(0);
+    LocalDate yesterday = LocalDate.now().minusDays(1);
 
     String logFileName = yesterday + logSetting.getExtension();
     File targetLogFile = new File(logFileName);
@@ -98,6 +103,17 @@ public class LogService {
     }
   }
 
+  /**
+   * アクセスログをマップに保存
+   *
+   * @param logDtoMap
+   * @param dtoKey マップのキー
+   * @param apiName API名
+   * @param httpMethod Httpメソッド
+   * @param aggregationDate 集計日
+   * @param excutionTime 実行時間
+   * @param httpStatusCode Httpステータスコード
+   */
   private void addMapByLogMapKey(
       Map<String, LogDto> logDtoMap,
       String dtoKey,
@@ -133,6 +149,17 @@ public class LogService {
     }
   }
 
+  /**
+   * 書式のチェック
+   *
+   * @param logDataLineNumber ログファイル行数
+   * @param url URL
+   * @param httpMethod Httpメソッド
+   * @param httpStatusCode Httpステータスコード
+   * @param excutionTime 実行時間
+   * @param aggregationDate 集計日
+   * @return
+   */
   private boolean checkLogPattern(
       long logDataLineNumber,
       String url,
@@ -163,6 +190,11 @@ public class LogService {
     return true;
   }
 
+  /**
+   * リストをDBに保存
+   *
+   * @param apiAccessLogDtoList
+   */
   private void saveAllLogs(List<LogDto> apiAccessLogDtoList) {
     List<Log> apiAccessLogEntityList =
         apiAccessLogDtoList.stream().map(this::convertToEntity).collect(Collectors.toList());
@@ -173,6 +205,13 @@ public class LogService {
     return new Log(logDto);
   }
 
+  /**
+   * 開始日から終了日の集計日を検索
+   *
+   * @param startDate
+   * @param endDate
+   * @return
+   */
   public List<Log> searchAggregate(LocalDate startDate, LocalDate endDate) {
     return logRepository.findByAggregateDateBetween(startDate, endDate);
   }

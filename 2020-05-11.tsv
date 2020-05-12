@@ -1,0 +1,4 @@
+PATCH	/api/products/25/images/	200	198	2020-05-11
+GET	/api/products/	200	36	2020-05-11
+GET	/api/products/25/images/d6384bf6-ae7b-4e08-bbe9-5d255254110b.jpg	200	48	2020-05-11
+GET	/api/products/25/images/d6384bf6-ae7b-4e08-bbe9-5d255254110b.jp	404	97	2020-05-11

@@ -6,6 +6,8 @@ import com.teamlab.engineering.restfulapi.exception.ErrorResponse;
 import com.teamlab.engineering.restfulapi.service.AccessTokenService;
 import com.teamlab.engineering.restfulapi.setting.AccessTokenSetting;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -38,11 +40,15 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     this.messageSource = messageSource;
   }
 
+  private static final Logger logger = LoggerFactory.getLogger(AccessTokenFilter.class);
+
   @Override
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
+
     String requestHeaderValue = request.getHeader(HttpHeaders.AUTHORIZATION);
+
     // Authorizationヘッダが空,または存在しない
     if (StringUtils.isBlank(requestHeaderValue)) {
       setErrorResponse(
@@ -75,6 +81,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             messageSource.getMessage("error.filter.accessToken.null", null, Locale.JAPAN));
         return;
       }
+
       // アクセストークンの有効期限が切れている
       if (accessTokenService.isAccessTokenDeadlineEnabled(apiAccessToken)) {
         setErrorResponse(

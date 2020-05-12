@@ -172,12 +172,11 @@ public class ProductService {
     byte[] b;
     // ResourceインタフェースはInputStreamSourceインタフェースを継承しているのでgetInputStreamメソッドで、リソースファイルのInputStreamを取得することができます。
     String mediaType;
-    try (InputStream image = resource.getInputStream()) {
-      mediaType = URLConnection.guessContentTypeFromStream(image);
+    InputStream image = resource.getInputStream();
+    mediaType = URLConnection.guessContentTypeFromStream(image);
 
-      // IOUtils型はInputStreamを読み込み、byte[]を返す静的メソッドを持ちます。
-      b = IOUtils.toByteArray(image);
-    }
+    // IOUtils型はInputStreamを読み込み、byte[]を返す静的メソッドを持ちます。
+    b = IOUtils.toByteArray(image);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.valueOf(mediaType));
     headers.setContentLength(b.length);

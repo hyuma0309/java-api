@@ -66,19 +66,18 @@ class ImageService {
   }
 
   void validateMineType(MultipartFile multipartFile) {
-    try {
-      // リクエストの本文の MIME タイプを返します
-      String mimeType = multipartFile.getContentType();
+    String mimeType = multipartFile.getContentType();
+    String realMimeType;
 
-      String realMimeType;
-      try (InputStream inputStream = new BufferedInputStream(multipartFile.getInputStream())) {
-        realMimeType = URLConnection.guessContentTypeFromStream(inputStream);
-      }
-      if (!Objects.equals(realMimeType, mimeType)) {
-        throw new UnsupportedMediaTypeException("ファイルが偽装されています");
-      }
+    try (InputStream inputStream = new BufferedInputStream(multipartFile.getInputStream())) {
+      // リクエストの本文の MIME タイプを返します
+      realMimeType = URLConnection.guessContentTypeFromStream(inputStream);
     } catch (IOException e) {
       throw new RuntimeException(e);
+    }
+
+    if (!Objects.equals(realMimeType, mimeType)) {
+      throw new UnsupportedMediaTypeException("ファイルが偽装されています");
     }
   }
 

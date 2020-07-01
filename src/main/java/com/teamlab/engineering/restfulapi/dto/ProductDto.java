@@ -40,7 +40,7 @@ public class ProductDto {
   }
 
   public String getDescription() {
-    return title;
+    return description;
   }
 
   public void setDescription(String description) {

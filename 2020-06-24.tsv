@@ -1,0 +1,10 @@
+GET	/api/products	401	409	2020-06-24
+GET	/api/products	401	332	2020-06-24
+OPTIONS	/api/products/	401	17	2020-06-24
+OPTIONS	/api/products/	401	34	2020-06-24
+GET	/api/products/	401	1	2020-06-24
+OPTIONS	/api/products/	401	1	2020-06-24
+OPTIONS	/api/products/	401	2	2020-06-24
+OPTIONS	/api/products/	401	1	2020-06-24
+OPTIONS	/api/products/	401	17	2020-06-24
+OPTIONS	/api/products/	401	2	2020-06-24

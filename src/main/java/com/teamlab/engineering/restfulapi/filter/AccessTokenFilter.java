@@ -47,6 +47,15 @@ public class AccessTokenFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Headers", "*");
+    response.setHeader("Access-Control-Allow-Methods", "*");
+
+    if ("OPTIONS".equals(request.getMethod())) {
+      response.setStatus(HttpServletResponse.SC_OK);
+      return;
+    }
+
     String requestHeaderValue = request.getHeader(HttpHeaders.AUTHORIZATION);
 
     // Authorizationヘッダが空,または存在しない
@@ -71,9 +80,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             accessTokenSetting.getAuthorizationHeaderFormat().length() + 1);
 
     AccessToken apiAccessToken = accessTokenService.getAccessToken(token);
-
     try {
-
       // アクセストークンがDBに存在しない
       if (apiAccessToken == null) {
         setErrorResponse(
@@ -90,7 +97,6 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                 "error.filter.accessToken.expiredValidTime", null, Locale.JAPAN));
         return;
       }
-
       // アクセストークンの更新日時を現在日時に更新
       accessTokenService.overWriteAccessTokenCurrentTimeUpdate(apiAccessToken);
 

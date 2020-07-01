@@ -5,6 +5,8 @@ import com.teamlab.engineering.restfulapi.exception.ProductNotImageException;
 import com.teamlab.engineering.restfulapi.form.ProductForm;
 import com.teamlab.engineering.restfulapi.service.ProductService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +35,7 @@ import java.util.List;
 @RequestMapping("api/products")
 public class ProductController {
   private final ProductService productService;
+  private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
   public ProductController(ProductService productService) {
     this.productService = productService;

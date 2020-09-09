@@ -2,8 +2,6 @@ package com.teamlab.engineering.restfulapi.service;
 
 import com.teamlab.engineering.restfulapi.dto.GithubDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.api.GitHubUserProfile;
 import org.springframework.social.github.api.impl.GitHubTemplate;
@@ -19,8 +17,6 @@ import org.springframework.stereotype.Service;
  * @author asada
  */
 @Service
-@Configuration
-@PropertySource(value = {"classpath:application.yml"})
 public class OAuthService {
   /** githubの設定 */
   @Value("${clientId}")

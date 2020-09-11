@@ -223,3 +223,28 @@ $ $source ~/.bash_profile
 ```
 
  * `$ gradle bootRun`
+ 
+ 
+### アプリケーションのデプロイ方法
+
+- EC2サーバにログイン  
+`ssh -i アクセスkeyファイル名 ec2-user@パブリックIPアドレス` 
+ 
+- 必要なものをインストールする
+
+  `sdk install gradle 6.5.1` gradleをインストール   
+  `sudo yum install git` gitをインストール
+  
+  `mysql -u root -p`
+  
+   `sudo yum localinstall https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm -y` Mysqlをインストール
+ 
+- クローンをする
+
+  `git clone git@github.com:teamlab-engineering/asada-restapi.git`でクローンしてくる
+  
+- jarファイルを起動する 
+
+  `/asada-restapi/builds/libs`に移動する
+ 
+  `nohup  sudo java -jar -Dspring.profiles.active=production  asada-restapi-0.0.1-SNAPSHOT.jar &`  

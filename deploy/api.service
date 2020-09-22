@@ -4,7 +4,7 @@ After=local-fs.target
 ConditionPathExists=/deploy
 
 [Service]
-ExecStart=./build/libs/asada-restapi-0.0.1-SNAPSHOT.jar
+ExecStart=/home/ec2-user/build/libs/asada-restapi-0.0.1-SNAPSHOT.jar
 Restart=no
 Type=simple
 

@@ -243,8 +243,15 @@ $ $source ~/.bash_profile
 
   `git clone git@github.com:teamlab-engineering/asada-restapi.git`でクローンしてくる
   
-- jarファイルを起動する 
-
-  `/asada-restapi/builds/libs`に移動する
+-  `cd asada-restapi`で移動する
  
-  `nohup  sudo java -jar -Dspring.profiles.active=production  asada-restapi-0.0.1-SNAPSHOT.jar &`  
+- サービスの起動
+
+有効化
+`$ sudo systemctl enable api.service`
+
+起動
+`$ sudo systemctl start api.service`
+
+動作しているかの確認
+`$  sudo systemctl status api.service`

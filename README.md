@@ -255,3 +255,6 @@ $ $source ~/.bash_profile
 
 動作しているかの確認
 `$  sudo systemctl status api.service`
+
+- ブラウザで表示
+`asadahyuma-alb-1711287778.ap-northeast-1.elb.amazonaws.com`

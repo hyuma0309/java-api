@@ -1,0 +1,13 @@
+[Unit]
+Description = 自動起動します
+After=local-fs.target
+
+[Service]
+ExecStart=/opt/start-api-services.sh
+ExecStop=/opt/stop-api-services.sh
+Restart=no
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+

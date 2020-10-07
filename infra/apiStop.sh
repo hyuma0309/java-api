@@ -1,4 +1,4 @@
 #!/bin/sh
 
-#　起動中のshファイルの停止
-sudo systemctl stop api.sh 
+#　起動中のサービスの停止
+sudo systemctl stop api.service

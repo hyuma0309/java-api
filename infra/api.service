@@ -3,8 +3,8 @@ Description = 自動起動します
 After=local-fs.target
 
 [Service]
-ExecStart=/opt/api.sh start
-ExecStop=/opt/apiStop.sh stop
+ExecStart=/opt/api.sh
+ExecStop=/opt/apiStop.sh
 Restart=no
 Type=simple
 

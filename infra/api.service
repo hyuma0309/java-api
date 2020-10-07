@@ -4,6 +4,7 @@ After=local-fs.target
 
 [Service]
 ExecStart=/opt/api.sh start
+ExecStop=/opt/apiStop.sh stop
 Restart=no
 Type=simple
 

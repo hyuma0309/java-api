@@ -8,3 +8,4 @@ sudo java -jar -Dspring.profiles.active=production /home/ec2-user/asada-restapi-
 cd home/ec2-user/asada-frontend/build
 
 python -m SimpleHTTPServer 3000
+

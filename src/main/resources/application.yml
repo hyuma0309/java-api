@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: local
+
   datasource:
     url: jdbc:mysql://localhost:3306/restful_api
     username: root
@@ -9,9 +12,6 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     initialization-mode: always
     sql-script-encoding: utf-8
-
-  profiles:
-    active: dev
 
   jpa:
     database: MYSQL
@@ -51,6 +51,5 @@ clientSecret: ${GITHUB_CLIENTSECRET}
 callbackUrl: http://localhost:8080/github/callback
 
 
-uploadDir: src/main/resources/static/image/
 
 

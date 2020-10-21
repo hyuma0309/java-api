@@ -1,5 +1,11 @@
 package com.teamlab.engineering.restfulapi.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.teamlab.engineering.restfulapi.exception.UnsupportedMediaTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -7,11 +13,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
-import java.nio.file.Files;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -26,6 +31,8 @@ class ImageService {
   // UploadDirプラグインはファイルのアップロード時に、ファイルの拡張子によってアップロード先のディレクトリを自動的に切り替えるプラグイン
   @Value("${uploadDir}")
   private String uploadDir;
+
+  private final String awsBucketName = "tle-dev-asadahyuma";
 
   /**
    * 画像ファイルのアップロード
@@ -45,13 +52,22 @@ class ImageService {
     validateMineType(multipartFile);
     String random = UUID.randomUUID().toString();
     String imagePath = random + extension;
-    File file = new File(uploadDir + imagePath);
+    // S3クライアント作成
+    AmazonS3 client = getClient();
+    ObjectMetadata MetaData = new ObjectMetadata();
+
     try {
-      multipartFile.transferTo(file.toPath());
-      return imagePath;
+      // 画像データ取得
+      byte[] decode = multipartFile.getBytes();
+      try (InputStream inputStream = new ByteArrayInputStream(decode)) {
+        client.putObject(awsBucketName, imagePath, inputStream, MetaData);
+      } catch (AmazonServiceException e) {
+        throw new RuntimeException("画像登録に失敗しました", e);
+      }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
     }
+    return imagePath;
   }
 
   void validateExtension(MultipartFile multipartFile) {
@@ -87,11 +103,16 @@ class ImageService {
    * @param imagePath 商品画像
    */
   void deleteFile(String imagePath) {
-    File file = new File(uploadDir + imagePath);
+    AmazonS3 client = getClient();
     try {
-      Files.deleteIfExists(file.toPath());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      client.deleteObject(new DeleteObjectRequest(awsBucketName, imagePath));
+    } catch (AmazonServiceException e) {
+      throw new RuntimeException("画像削除に失敗しました", e);
     }
+  }
+
+  /** AWSクライアント作成 */
+  private AmazonS3 getClient() {
+    return AmazonS3ClientBuilder.standard().withRegion(Regions.AP_NORTHEAST_1).build();
   }
 }

@@ -40,3 +40,7 @@ HELP.md
 .vscode/
 
 .DS_Store
+
+### Docker ###
+docker/mysql/server/data
+docker/minio/server/data

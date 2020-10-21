@@ -1,0 +1,56 @@
+version: "3"
+services:
+  # https://hub.docker.com/_/mysql
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_ROOT_USER}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      TZ: "${DB_TIMEZONE}"
+    volumes:
+      - ./mysql/server/conf/:/etc/mysql/conf.d
+      - ./mysql/server/initdb.d/:/docker-entrypoint-initdb.d
+      - ./mysql/server/data:/var/lib/mysql
+      - ./mysql/client/conf/my.cnf:/root/.my.cnf:ro
+    networks:
+      - tle_todo_network
+
+  # https://docs.min.io/
+  minio-server:
+    image: minio/minio:latest
+    container_name: minio-server
+    ports:
+      - "${MINIO_EXTERNAL_PORT}:${MINIO_INTERNAL_PORT}"
+    environment:
+      - "MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}"
+      - "MINIO_SECRET_KEY=${MINIO_SECRET_KEY}"
+      - "MINIO_REGION_NAME=${MINIO_REGION_NAME}"
+    volumes:
+      - ./minio/server/data:/data
+    networks:
+      - tle_todo_network
+    command: server /data
+
+  # https://docs.min.io/docs/minio-client-quickstart-guide.html
+  minio_client:
+    image: minio/mc:latest
+    networks:
+      - tle_todo_network
+    depends_on:
+      - minio-server
+    # minio起動時にmbでバケットを生成する（mbを複数行記述すれば複数バケット生成可能）
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add ${MINIO_HOST} http://minio-server:${MINIO_INTERNAL_PORT} ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY}) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb ${MINIO_HOST}/${MINIO_PRODUCT_IMAGE_BUCKET};
+      exit 0;
+      "
+
+networks:
+  tle_todo_network:
+    driver: bridge

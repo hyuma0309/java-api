@@ -1,24 +1,23 @@
 package com.teamlab.engineering.restfulapi.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.S3Object;
 import com.teamlab.engineering.restfulapi.dto.ProductDto;
 import com.teamlab.engineering.restfulapi.entitiy.Product;
 import com.teamlab.engineering.restfulapi.exception.AlreadyExistTitleException;
 import com.teamlab.engineering.restfulapi.exception.ProductNotFoundException;
-import com.teamlab.engineering.restfulapi.exception.ProductNotImageException;
 import com.teamlab.engineering.restfulapi.repository.ProductRepository;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -36,6 +35,8 @@ public class ProductService {
   private final ImageService imageService;
 
   private final ResourceLoader resourceLoader;
+
+  private final String awsBucketName = "tle-dev-asadahyuma";
 
   @Value("${uploadDir}")
   private String uploadDir;
@@ -165,22 +166,16 @@ public class ProductService {
    */
   public HttpEntity<byte[]> getImage(Long id, String imagePath) throws IOException {
     Product product = findProduct(id);
-    if (product.getImagePath() == null) {
-      throw new ProductNotImageException("画像が存在しません");
-    }
-    Resource resource = resourceLoader.getResource("File:" + uploadDir + imagePath);
-    byte[] b;
-    // ResourceインタフェースはInputStreamSourceインタフェースを継承しているのでgetInputStreamメソッドで、リソースファイルのInputStreamを取得することができます。
-    String mediaType;
-    InputStream image = resource.getInputStream();
-    mediaType = URLConnection.guessContentTypeFromStream(image);
+    AmazonS3 client = getClient();
 
-    // IOUtils型はInputStreamを読み込み、byte[]を返す静的メソッドを持ちます。
-    b = IOUtils.toByteArray(image);
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.valueOf(mediaType));
-    headers.setContentLength(b.length);
-    return new HttpEntity<>(b, headers);
+    try (S3Object s3Image = client.getObject(awsBucketName, imagePath)) {
+      byte[] imageByte = s3Image.getObjectContent().readAllBytes();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentLength(imageByte.length);
+      return new HttpEntity<>(imageByte, headers);
+    } catch (IOException | AmazonServiceException e) {
+      throw new RuntimeException("画像取得に失敗しました", e);
+    }
   }
 
   /**
@@ -225,5 +220,10 @@ public class ProductService {
    */
   public ProductDto convertToDto(Product product) {
     return new ProductDto(product);
+  }
+
+  /** AWSクライアント作成 */
+  private AmazonS3 getClient() {
+    return AmazonS3ClientBuilder.standard().withRegion(Regions.AP_NORTHEAST_1).build();
   }
 }

@@ -11,7 +11,7 @@ spring:
     sql-script-encoding: utf-8
 
   profiles:
-    active: dev
+    active: local
 
   jpa:
     database: MYSQL
@@ -50,7 +50,20 @@ clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}
 callbackUrl: http://localhost:8080/github/callback
 
+#==================================================================
+# AWS設定
+#==================================================================
+cloud.aws:
+  region:
+    static: ap-northeast-1
+  stack:
+    auto: false
+  credentials:
+    # .envで指定したminioのキー
+    accessKey: local-dummy-access-key
+    secretKey: local-dummy-secret-key
+  endPointUrl: http://127.0.0.1:9000
 
-uploadDir: src/main/resources/static/image/
-
-
+aws:
+  bucket:
+    name: "asadahyuma-product-image"

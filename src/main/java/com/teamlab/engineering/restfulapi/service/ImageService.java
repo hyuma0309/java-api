@@ -28,11 +28,8 @@ import java.util.UUID;
 @Service
 class ImageService {
 
-  // UploadDirプラグインはファイルのアップロード時に、ファイルの拡張子によってアップロード先のディレクトリを自動的に切り替えるプラグイン
-  @Value("${uploadDir}")
-  private String uploadDir;
-
-  private final String awsBucketName = "tle-dev-asadahyuma";
+  @Value("${aws.bucket.name}")
+  private String awsBucketName;
 
   /**
    * 画像ファイルのアップロード

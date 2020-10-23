@@ -36,10 +36,8 @@ public class ProductService {
 
   private final ResourceLoader resourceLoader;
 
-  private final String awsBucketName = "tle-dev-asadahyuma";
-
-  @Value("${uploadDir}")
-  private String uploadDir;
+  @Value("${aws.bucket.name}")
+  private String awsBucketName;
 
   public ProductService(
       ProductRepository productRepository,

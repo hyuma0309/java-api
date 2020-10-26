@@ -18,7 +18,7 @@ services:
       - ./mysql/server/data:/var/lib/mysql
       - ./mysql/client/conf/my.cnf:/root/.my.cnf:ro
     networks:
-      - tle_todo_network
+      - tle_restful_api_network
 
   # https://docs.min.io/
   minio-server:
@@ -33,14 +33,14 @@ services:
     volumes:
       - ./minio/server/data:/data
     networks:
-      - tle_todo_network
+      - tle_restful_api_network
     command: server /data
 
   # https://docs.min.io/docs/minio-client-quickstart-guide.html
   minio_client:
     image: minio/mc:latest
     networks:
-      - tle_todo_network
+      - tle_restful_api_network
     depends_on:
       - minio-server
     # minio起動時にmbでバケットを生成する（mbを複数行記述すれば複数バケット生成可能）
@@ -52,5 +52,5 @@ services:
       "
 
 networks:
-  tle_todo_network:
+  tle_restful_api_network:
     driver: bridge

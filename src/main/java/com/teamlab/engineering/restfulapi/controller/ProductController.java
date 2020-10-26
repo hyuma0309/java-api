@@ -1,7 +1,6 @@
 package com.teamlab.engineering.restfulapi.controller;
 
 import com.teamlab.engineering.restfulapi.dto.ProductDto;
-import com.teamlab.engineering.restfulapi.exception.ProductNotImageException;
 import com.teamlab.engineering.restfulapi.form.ProductForm;
 import com.teamlab.engineering.restfulapi.service.ProductService;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -117,13 +115,8 @@ public class ProductController {
    */
   @GetMapping("{id}/images/{imagePath}")
   @ResponseStatus(HttpStatus.OK)
-  public HttpEntity<byte[]> getImage(@PathVariable Long id, @PathVariable String imagePath)
-      throws IOException {
-    try {
-      return productService.getImage(id, imagePath);
-    } catch (IOException e) {
-      throw new ProductNotImageException("画像が存在しません", e);
-    }
+  public HttpEntity<byte[]> getImage(@PathVariable Long id, @PathVariable String imagePath) {
+    return productService.getImage(id, imagePath);
   }
 
   /**

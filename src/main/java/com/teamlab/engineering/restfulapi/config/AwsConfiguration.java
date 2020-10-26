@@ -10,11 +10,13 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AwsConfiguration {
+@ConfigurationProperties(prefix = "client-configuration")
+public class AwsConfiguration extends ClientConfiguration {
 
   @Value("${spring.profiles.active}")
   private String springProfilesActive;
@@ -31,20 +33,103 @@ public class AwsConfiguration {
   @Value("${cloud.aws.endPointUrl}")
   private String endPointUrl;
 
+  private int connectionTimeout;
+
+  @Override
+  public int getConnectionTimeout() {
+    return connectionTimeout;
+  }
+
+  @Override
+  public void setConnectionTimeout(int connectionTimeout) {
+    this.connectionTimeout = connectionTimeout;
+  }
+
+  private int clientExecutionTimeout;
+
+  @Override
+  public int getClientExecutionTimeout() {
+    return clientExecutionTimeout;
+  }
+
+  @Override
+  public void setClientExecutionTimeout(int clientExecutionTimeout) {
+    this.clientExecutionTimeout = clientExecutionTimeout;
+  }
+
+  private int requestTimeout;
+
+  @Override
+  public int getRequestTimeout() {
+    return requestTimeout;
+  }
+
+  @Override
+  public void setRequestTimeout(int requestTimeout) {
+    this.requestTimeout = requestTimeout;
+  }
+
+  private int socketTimeout;
+
+  @Override
+  public int getSocketTimeout() {
+    return socketTimeout;
+  }
+
+  @Override
+  public void setSocketTimeout(int socketTimeout) {
+    this.socketTimeout = socketTimeout;
+  }
+
+  private int maxErrorRetry;
+
+  @Override
+  public int getMaxErrorRetry() {
+    return maxErrorRetry;
+  }
+
+  @Override
+  public void setMaxErrorRetry(int maxErrorRetry) {
+    this.maxErrorRetry = maxErrorRetry;
+  }
+
+  private Protocol protocol;
+
+  @Override
+  public Protocol getProtocol() {
+    return protocol;
+  }
+
+  @Override
+  public void setProtocol(Protocol protocol) {
+    this.protocol = protocol;
+  }
+
+  private boolean useGzip;
+
+  public boolean getUseGzip() {
+    return useGzip;
+  }
+
+  @Override
+  public void setUseGzip(boolean useGzip) {
+    this.useGzip = useGzip;
+  }
+
   @Bean
   public AmazonS3 getClient() {
-    ClientConfiguration clientConfig = new ClientConfiguration();
-    clientConfig.setProtocol(Protocol.HTTPS);
-    clientConfig.setConnectionTimeout(10000);
-    clientConfig.setClientExecutionTimeout(10000);
-    clientConfig.setRequestTimeout(10000);
-    clientConfig.setSocketTimeout(10000);
-    clientConfig.setMaxErrorRetry(5);
-    clientConfig.setUseGzip(true);
+    AwsConfiguration client = new AwsConfiguration();
+    client.setProtocol(protocol);
+    client.setConnectionTimeout(connectionTimeout);
+    client.setClientExecutionTimeout(clientExecutionTimeout);
+    client.setRequestTimeout(requestTimeout);
+    client.setSocketTimeout(socketTimeout);
+    client.setMaxErrorRetry(maxErrorRetry);
+    client.setUseGzip(useGzip);
 
     AmazonS3ClientBuilder clientBuilder =
         AmazonS3ClientBuilder.standard()
-            .withClientConfiguration(clientConfig)
+            .withClientConfiguration(client)
             .withEndpointConfiguration(
                 new AwsClientBuilder.EndpointConfiguration(endPointUrl, region));
 

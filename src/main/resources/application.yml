@@ -67,3 +67,12 @@ cloud.aws:
 aws:
   bucket:
     name: "asadahyuma-product-image"
+
+clientConfiguration:
+  connectionTimeout: 10000
+  clientExecutionTimeout: 10000
+  requestTimeout: 10000
+  socketTimeout: 10000
+  maxErrorRetry: 5
+  protocol: HTTPS
+  useGzip: true

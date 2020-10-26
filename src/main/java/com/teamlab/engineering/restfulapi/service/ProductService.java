@@ -165,7 +165,7 @@ public class ProductService {
    * @param id 商品ID
    * @return 商品画像
    */
-  public HttpEntity<byte[]> getImage(Long id, String imagePath) throws IOException {
+  public HttpEntity<byte[]> getImage(Long id, String imagePath) {
     Product product = findProduct(id);
     AmazonS3 client = getClient();
 

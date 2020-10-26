@@ -61,14 +61,12 @@ class ImageService {
     try {
       // 画像データ取得
       byte[] decode = multipartFile.getBytes();
-      try (InputStream inputStream = new ByteArrayInputStream(decode)) {
-        client.putObject(awsBucketName, imagePath, inputStream, MetaData);
-      } catch (AmazonServiceException e) {
-        throw new RuntimeException("画像登録に失敗しました", e);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+      InputStream inputStream = new ByteArrayInputStream(decode);
+      client.putObject(awsBucketName, imagePath, inputStream, MetaData);
+    } catch (AmazonServiceException | IOException e) {
+      throw new RuntimeException("画像登録に失敗しました", e);
     }
+
     return imagePath;
   }
 

@@ -1,11 +1,10 @@
 package com.teamlab.engineering.restfulapi.service;
 
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.teamlab.engineering.restfulapi.config.AwsConfiguration;
 import com.teamlab.engineering.restfulapi.exception.UnsupportedMediaTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,14 @@ import java.util.UUID;
 @Service
 class ImageService {
 
+  private final AwsConfiguration awsConfiguration;
+
   @Value("${aws.bucket.name}")
   private String awsBucketName;
+
+  ImageService(AwsConfiguration awsConfiguration) {
+    this.awsConfiguration = awsConfiguration;
+  }
 
   /**
    * 画像ファイルのアップロード
@@ -110,6 +115,6 @@ class ImageService {
 
   /** AWSクライアント作成 */
   private AmazonS3 getClient() {
-    return AmazonS3ClientBuilder.standard().withRegion(Regions.AP_NORTHEAST_1).build();
+    return awsConfiguration.getClient();
   }
 }

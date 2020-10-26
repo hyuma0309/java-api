@@ -1,10 +1,9 @@
 package com.teamlab.engineering.restfulapi.service;
 
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
+import com.teamlab.engineering.restfulapi.config.AwsConfiguration;
 import com.teamlab.engineering.restfulapi.dto.ProductDto;
 import com.teamlab.engineering.restfulapi.entitiy.Product;
 import com.teamlab.engineering.restfulapi.exception.AlreadyExistTitleException;
@@ -36,16 +35,20 @@ public class ProductService {
 
   private final ResourceLoader resourceLoader;
 
+  private final AwsConfiguration awsConfiguration;
+
   @Value("${aws.bucket.name}")
   private String awsBucketName;
 
   public ProductService(
       ProductRepository productRepository,
       ImageService imageService,
-      ResourceLoader resourceLoader) {
+      ResourceLoader resourceLoader,
+      AwsConfiguration awsConfiguration) {
     this.productRepository = productRepository;
     this.imageService = imageService;
     this.resourceLoader = resourceLoader;
+    this.awsConfiguration = awsConfiguration;
   }
 
   /**
@@ -222,6 +225,6 @@ public class ProductService {
 
   /** AWSクライアント作成 */
   private AmazonS3 getClient() {
-    return AmazonS3ClientBuilder.standard().withRegion(Regions.AP_NORTHEAST_1).build();
+    return awsConfiguration.getClient();
   }
 }

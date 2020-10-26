@@ -1,6 +1,0 @@
-OPTIONS	/api/products/	200	0	2020-10-22
-GET	/api/products/	200	150	2020-10-22
-OPTIONS	/api/products/	200	0	2020-10-22
-POST	/api/products/	201	112	2020-10-22
-OPTIONS	/api/products/295/images	200	0	2020-10-22
-OPTIONS	/api/products/295/images	200	3	2020-10-22

@@ -33,6 +33,7 @@
     │   ├── java
     │   │   └── com.teamlab.engineering.restfulapi
     │   │           ├── config
+    │   │           │   └── AwsConfiguration
     │   │           │   └── FilterConfiguration
     │   │           │   └── MessageSourceConfiguration
     │   │           │   └── WebMvcConfig
@@ -257,4 +258,4 @@ $ $source ~/.bash_profile
 `$  sudo systemctl status api.service`
 
 - ブラウザで表示
-`asadahyuma-alb-1711287778.ap-northeast-1.elb.amazonaws.com`
+`asadahyuma-alb-1711287778.ap-northeast-1.elb.amazonaws.com/top`

@@ -48,6 +48,15 @@ settings:
 
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}
-callbackUrl: http://asadahyuma-alb-1711287778.ap-northeast-1.elb.amazonaws.com/github/callback
+callbackUrl: https://d1o2uny0l2z31u.cloudfront.net/github/callback
 
-uploadDir: src/main/resources/static/image/
+#==================================================================
+# AWS設定
+#==================================================================
+cloud.aws:
+  endPointUrl: https://s3-ap-northeast-1.amazonaws.com
+
+
+aws:
+  bucket:
+    name: "tle-dev-asadahyuma"

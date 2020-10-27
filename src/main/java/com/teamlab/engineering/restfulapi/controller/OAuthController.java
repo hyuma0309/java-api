@@ -34,7 +34,7 @@ public class OAuthController {
    *
    * @return templates/index.html
    */
-  @GetMapping("/")
+  @GetMapping("/top")
   public String index() {
     return "index";
   }

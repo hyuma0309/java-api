@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - gradle build
+
+artifacts:
+  files:
+    - build/libs/asada-restapi-0.0.1-SNAPSHOT.jar
+    - deploy/start_server.sh
+    - deploy/stop_server.sh
+    - appspec.yml
+  discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.gradle/**/*'

@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/asada-restapi/
+    overwrite: true
+
+permissions:
+  - object: /home/ec2-user/asada-restapi/*
+    mode: 777
+
+hooks:
+  ApplicationStart:
+    - location: deploy/start_server.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: deploy/stop_server.sh
+      timeout: 300
+      runas: root

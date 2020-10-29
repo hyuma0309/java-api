@@ -3,7 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
-      - gradle build
+      - gradle build -x test
 
 artifacts:
   files:

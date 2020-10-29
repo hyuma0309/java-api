@@ -1,0 +1,9 @@
+OPTIONS	/api/products/	200	0	2020-10-29
+GET	/api/products/	200	122	2020-10-29
+POST	/api/products/	400	95	2020-10-29
+OPTIONS	/api/products/	200	0	2020-10-29
+POST	/api/products/	201	36	2020-10-29
+OPTIONS	/api/products/346/images	200	0	2020-10-29
+PATCH	/api/products/346/images	200	218	2020-10-29
+OPTIONS	/api/products/346/images/573ea927-55e3-452b-a648-0e0497928c8d.jpg	200	0	2020-10-29
+GET	/api/products/346/images/573ea927-55e3-452b-a648-0e0497928c8d.jpg	200	91	2020-10-29

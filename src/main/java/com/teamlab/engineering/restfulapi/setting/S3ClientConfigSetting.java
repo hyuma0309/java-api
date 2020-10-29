@@ -1,10 +1,12 @@
-package com.teamlab.engineering.restfulapi.dto;
+package com.teamlab.engineering.restfulapi.setting;
 
 import com.amazonaws.Protocol;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+@Component
 @ConfigurationProperties(prefix = "client-configuration")
-public class S3clientConfigDto {
+public class S3ClientConfigSetting {
   private int connectionTimeoutSec;
   private int clientExecutionTimeoutSec;
   private int requestTimeoutSec;

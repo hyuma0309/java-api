@@ -11,10 +11,10 @@ permissions:
 
 hooks:
   ApplicationStart:
-    - location: aiueo/start_server.sh
+    - location: start_server.sh
       timeout: 300
       runas: root
   ApplicationStop:
-    - location: aiueo/stop_server.sh
+    - location: stop_server.sh
       timeout: 300
       runas: root

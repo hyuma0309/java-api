@@ -11,10 +11,10 @@ permissions:
 
 hooks:
   ApplicationStart:
-    - location: /home/ec2-user/asada-restapi/start_server.sh
+    - location: start_server.sh
       timeout: 300
       runas: root
   ApplicationStop:
-    - location: /home/ec2-user/asada-restapi/stop_server.sh
+    - location: stop_server.sh
       timeout: 300
       runas: root

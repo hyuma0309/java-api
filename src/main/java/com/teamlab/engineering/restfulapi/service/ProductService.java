@@ -180,7 +180,7 @@ public class ProductService {
   }
 
   /**
-   * 同一タイトルの商品が存在するかを検証
+   * 同一タイトルの商品が存在するか検証
    *
    * @param api
    * @param title 商品タイトル

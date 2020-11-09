@@ -48,5 +48,6 @@ dependencies {
 }
 
 bootJar {
+    baseName = 'asada-restapi'
     launchScript()
 }

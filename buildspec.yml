@@ -4,6 +4,8 @@ phases:
   build:
     commands:
       - gradle build -x test
+      - pwd
+      - ls -l
 
 artifacts:
   files:

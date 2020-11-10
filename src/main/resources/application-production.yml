@@ -15,6 +15,7 @@ spring:
 
   jpa:
     database: MYSQL
+    open-in-view: false
     hibernate:
       ddl-auto: none
 

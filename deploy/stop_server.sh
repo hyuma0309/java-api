@@ -1,7 +1,7 @@
 #!/bin/sh
 
-kill -9 $(lsof -i:80 -P)
-pid=$(lsof -i:80 -P)
+kill -9 $(lsof -t -i:80)
+pid=$(lsof -t :80)
 if [ $pid != null ]; then
   kill $pid
 fi

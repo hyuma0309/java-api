@@ -259,3 +259,8 @@ $ $source ~/.bash_profile
 
 - ブラウザで表示
 `asadahyuma-alb-1711287778.ap-northeast-1.elb.amazonaws.com/top`
+
+
+### 自動デプロイ  
+
+- ソースコードを更新しGithubへpushすると、自動でCodePipelineを通じビルド、デプロイを行う。

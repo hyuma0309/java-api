@@ -1,4 +1,5 @@
 #!/bin/sh
+source /home/ec2-user/.bash_profile
 
 kill -9 $(lsof -t -i:80)
 pid=$(lsof -t :80)

@@ -49,7 +49,7 @@ settings:
 
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}
-callbackUrl: https://d1o2uny0l2z31u.cloudfront.net/github/callback
+callbackUrl: https://tle-dev-asadahyuma.com/github/callback
 
 #==================================================================
 # AWS設定

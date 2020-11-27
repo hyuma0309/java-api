@@ -48,7 +48,7 @@ settings:
     extension: .tsv
 
 frontend:
-  url: http://localhost:3000
+  url: "*"
 
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}

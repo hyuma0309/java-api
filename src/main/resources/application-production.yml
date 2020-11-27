@@ -47,8 +47,6 @@ settings:
   log:
     extension: .tsv
 
-frontend:
-  url: "*"
 
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}

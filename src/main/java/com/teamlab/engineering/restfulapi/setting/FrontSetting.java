@@ -3,8 +3,6 @@ package com.teamlab.engineering.restfulapi.setting;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * Corsの設定
  *
@@ -13,13 +11,13 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "frontend.url")
 public class FrontSetting {
-  private List<String> urls;
+  private String url;
 
-  public List<String> getUrls() {
-    return urls;
+  public String getUrl() {
+    return url;
   }
 
-  public void setUrls(List<String> urls) {
-    this.urls = urls;
+  public void setUrl(String url) {
+    this.url = url;
   }
 }

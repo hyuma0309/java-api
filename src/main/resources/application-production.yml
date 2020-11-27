@@ -48,7 +48,7 @@ settings:
     extension: .tsv
 
 frontend:
-  url: "*"
+  url: "https://www.tle-dev-asadahyuma.com/"
 
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}

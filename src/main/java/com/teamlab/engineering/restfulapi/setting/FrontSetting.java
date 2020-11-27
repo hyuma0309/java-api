@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author asada
  */
 @Component
-@ConfigurationProperties(prefix = "frontend.url")
+@ConfigurationProperties(prefix = "frontend")
 public class FrontSetting {
   private String url;
 

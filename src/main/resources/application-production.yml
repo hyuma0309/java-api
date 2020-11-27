@@ -47,7 +47,6 @@ settings:
   log:
     extension: .tsv
 
-
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}
 callbackUrl: https://tle-dev-asadahyuma.com/github/callback

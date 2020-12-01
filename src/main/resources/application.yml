@@ -46,6 +46,9 @@ settings:
   log:
     extension: .tsv
 
+frontend:
+  url: http://localhost:3000
+
 clientId: ${GITHUB_CLIENTID}
 clientSecret: ${GITHUB_CLIENTSECRET}
 callbackUrl: http://localhost:8080/github/callback

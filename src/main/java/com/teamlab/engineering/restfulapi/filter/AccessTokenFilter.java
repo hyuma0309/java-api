@@ -48,6 +48,14 @@ public class AccessTokenFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     String requestHeaderValue = request.getHeader(HttpHeaders.AUTHORIZATION);
+    String requestUrl = request.getRequestURI();
+
+    // 画像取得方法はトークン認証を必要としないように変更
+    if(requestUrl.matches("^/api/products/[0-9]+/images/.+$")){
+      filterChain.doFilter(request, response);
+      return;
+    }
+
 
     // Authorizationヘッダが空,または存在しない
     if (StringUtils.isBlank(requestHeaderValue)) {

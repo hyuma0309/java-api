@@ -1,5 +1,5 @@
 
-# RESTfulAPI課題(Java簡易版)
+# RESTfulAPI(Java)
 
    
    
